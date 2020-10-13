@@ -10,17 +10,19 @@ public class BoardBuilder : MonoBehaviour
         E,
         W,
         B,
-        NULL
+        NULL,
+        START,
+        ENEMY
     }
 
     private readonly TT[,] _board =
     {
         {TT.NULL, TT.NULL, TT.NULL, TT.NULL, TT.NULL},
-        {TT.NULL, TT.E, TT.E, TT.W, TT.NULL},
+        {TT.NULL, TT.E, TT.START, TT.W, TT.NULL},
         {TT.NULL, TT.E, TT.E, TT.E, TT.NULL},
         {TT.B, TT.E, TT.E, TT.E, TT.B},
         {TT.NULL, TT.W, TT.E, TT.E, TT.NULL},
-        {TT.NULL, TT.W, TT.E, TT.E, TT.NULL},
+        {TT.NULL, TT.W, TT.ENEMY, TT.E, TT.NULL},
         {TT.NULL, TT.NULL, TT.B, TT.NULL, TT.NULL},
     };
 
@@ -30,6 +32,8 @@ public class BoardBuilder : MonoBehaviour
     public GameObject waterPrefab;
     public GameObject earthPrefab;
     public GameObject bridgePrefab;
+    public GameObject playerPrefab;
+    public GameObject enemyPrefab;
 
     private void Start()
     {
@@ -55,24 +59,48 @@ public class BoardBuilder : MonoBehaviour
                         break;
                     case TT.NULL:
                         break;
+                    case TT.START:
+                        PlaceTile(y, x, earthPrefab);
+                        PlacePlayer(y, x, playerPrefab);
+                        break;
+                    case TT.ENEMY:
+                        PlaceTile(y, x, earthPrefab);
+                        PlacePlayer(y, x, enemyPrefab);
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
         }
     }
-    
-    private static void PlaceTile(int y, int x, GameObject prefab)
+
+    private void PlaceTile(int y, int x, GameObject prefab)
     {
         var initialScale = prefab.transform.localScale;
         var initialPosition = prefab.transform.position;
-        
+
         var r = initialScale.z;
         var u = initialScale.x;
-        
+
         var globalZ = y * r + r / 2f;
         var globalX = x * u + u / 2f;
 
-        Instantiate(prefab, initialPosition + new Vector3(globalX, 0, globalZ), Quaternion.identity);
+        var newBlock =Instantiate(prefab, initialPosition + new Vector3(globalX, 0, globalZ), Quaternion.identity);
+        newBlock.transform.SetParent( this.transform);
+    }
+
+    private  void PlacePlayer(int y, int x, GameObject prefab)
+    {
+        var initialScale = earthPrefab.transform.localScale;
+        var initialPosition = prefab.transform.position;
+
+        var r = initialScale.z;
+        var u = initialScale.x;
+        var up = initialScale.y;
+
+        var globalZ = y * r + r / 2f;
+        var globalX = x * u + u / 2f;
+
+        Instantiate(prefab, initialPosition + new Vector3(globalX, 0, globalZ), prefab.transform.localRotation);
     }
 }

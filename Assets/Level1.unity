@@ -149,15 +149,15 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 0.990566, g: 0.9537559, b: 0.75226945, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
+    m_Type: 1
+    m_Resolution: 3
     m_CustomResolution: -1
     m_Strength: 1
     m_Bias: 0.05
@@ -206,13 +206,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 106382990}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalRotation: {x: 0.8137977, y: -0.17101009, z: 0.46984634, w: 0.29619816}
+  m_LocalPosition: {x: -6.52, y: 3.52, z: 11.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 140, y: -60, z: 0}
 --- !u!1 &782257016
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,6 +247,10 @@ MonoBehaviour:
   earthPrefab: {fileID: 327045172441070113, guid: 03c63cae044b14918ba2df943ec3fb88,
     type: 3}
   bridgePrefab: {fileID: 3945337716133543953, guid: bfea87939c97e469c9f908c834b727f2,
+    type: 3}
+  playerPrefab: {fileID: 6210959608728704983, guid: 47a5e7012d9f3431ea79e93116afb312,
+    type: 3}
+  enemyPrefab: {fileID: 219566179579972892, guid: eb36058743f4a4c82a30e8030b3d0914,
     type: 3}
 --- !u!4 &782257018
 Transform:
@@ -297,8 +301,8 @@ Camera:
   m_GameObject: {fileID: 1429014727}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.8490566, g: 0.65272623, b: 0.54067284, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
