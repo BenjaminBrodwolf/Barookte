@@ -12,6 +12,7 @@ public class PlayerInput : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
     }
 
+
     // Update is called once per frame
     private void Update()
     {
@@ -21,13 +22,14 @@ public class PlayerInput : MonoBehaviour
         var right = Input.GetKeyDown(KeyCode.RightArrow);
 
         var newPosition = _rigidbody.position;
-        
 
+
+        // Debug.DrawRay(newPosition + new Vector3(0, 1, 1), new Vector3(0, -2, 0), Color.red);
         if (up)
         {
             Debug.Log("up");
-            var allowed = Physics.Raycast(newPosition, new Vector3(0, -0.5f, 1));
-            allowed &= !Physics.Raycast(newPosition, new Vector3(0, 0, 1),1f);
+            var allowed = Physics.Raycast(newPosition + new Vector3(0, 1, 1), new Vector3(0, -2, 0));
+            allowed &= !Physics.Raycast(newPosition, new Vector3(0, 0, 1), 1f);
             if (allowed)
                 newPosition += new Vector3(0, 0, 1);
         }
@@ -35,8 +37,8 @@ public class PlayerInput : MonoBehaviour
         if (down)
         {
             Debug.Log("down");
-            var allowed = Physics.Raycast(newPosition, new Vector3(0, -0.5f, -1));
-            allowed &= !Physics.Raycast(newPosition, new Vector3(0, 0, -1),1f);
+            var allowed = Physics.Raycast(newPosition + new Vector3(0, 1, -1), new Vector3(0, -2, 0));
+            allowed &= !Physics.Raycast(newPosition, new Vector3(0, 0, -1), 1f);
             if (allowed)
                 newPosition += new Vector3(0, 0, -1);
         }
@@ -44,8 +46,8 @@ public class PlayerInput : MonoBehaviour
         if (left)
         {
             Debug.Log("left");
-            var allowed = Physics.Raycast(newPosition, new Vector3(-1, -0.5f, 0));
-            allowed &= !Physics.Raycast(newPosition, new Vector3(-1, 0, 0),1f);
+            var allowed = Physics.Raycast(newPosition + new Vector3(-1, 1, 0), new Vector3(0, -2, 0));
+            allowed &= !Physics.Raycast(newPosition, new Vector3(-1, 0, 0), 1f);
             if (allowed)
                 newPosition += new Vector3(-1, 0, 0);
         }
@@ -53,8 +55,8 @@ public class PlayerInput : MonoBehaviour
         if (right)
         {
             Debug.Log("right");
-            var allowed = Physics.Raycast(newPosition, new Vector3(1, -0.5f, 0));
-            allowed &= !Physics.Raycast(newPosition, new Vector3(1, 0, 0),1f);
+            var allowed = Physics.Raycast(newPosition + new Vector3(1, 1, 0), new Vector3(0, -2, 0));
+            allowed &= !Physics.Raycast(newPosition, new Vector3(1, 0, 0), 1f);
             if (allowed)
                 newPosition += new Vector3(1, 0, 0);
         }
