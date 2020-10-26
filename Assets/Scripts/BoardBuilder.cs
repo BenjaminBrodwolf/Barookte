@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BoardBuilder : MonoBehaviour
 {
-    private enum TT
+    public enum TT
     {
         E,
         W,
@@ -15,7 +15,7 @@ public class BoardBuilder : MonoBehaviour
         ENEMY
     }
 
-    private readonly TT[,] _board =
+    public readonly TT[,] _board =
     {
         {TT.NULL, TT.NULL, TT.NULL, TT.NULL, TT.NULL},
         {TT.NULL, TT.E, TT.START, TT.W, TT.NULL},
@@ -101,6 +101,7 @@ public class BoardBuilder : MonoBehaviour
         var globalZ = y * r + r / 2f;
         var globalX = x * u + u / 2f;
 
-        Instantiate(prefab, initialPosition + new Vector3(globalX, 0, globalZ), prefab.transform.localRotation);
+        var player = Instantiate(prefab, initialPosition + new Vector3(globalX, 0, globalZ), prefab.transform.localRotation);
+        player.transform.SetParent(this.transform);
     }
 }
