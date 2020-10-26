@@ -12,6 +12,43 @@ public class PlayerInput : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
     }
 
+    enum MoveDirections
+    {
+        UP,
+        RIGTH,
+        DOWN,
+        LEFT
+    }
+
+    private bool CanMove(Vector3 currentPosition, MoveDirections md)
+    {
+        var raycastDirection = new Vector3(0, -2, 0);
+        
+        switch (md)
+        {
+            case MoveDirections.UP:
+            {
+                return Physics.Raycast(currentPosition + new Vector3(0, 1, 1), raycastDirection)
+                       && !Physics.Raycast(currentPosition, new Vector3(0, 0, 1), 1f);
+            }
+            case MoveDirections.DOWN:
+            {
+                return Physics.Raycast(currentPosition + new Vector3(0, 1, -1), raycastDirection)
+                       && !Physics.Raycast(currentPosition, new Vector3(0, 0, -1), 1f);
+            }
+            case MoveDirections.LEFT:
+            {
+                return Physics.Raycast(currentPosition + new Vector3(-1, 1, 0), raycastDirection)
+                       && !Physics.Raycast(currentPosition, new Vector3(-1, 0, 0), 1f);
+            }
+            case MoveDirections.RIGTH:
+            {
+                return Physics.Raycast(currentPosition + new Vector3(1, 1, 0), raycastDirection)
+                       && !Physics.Raycast(currentPosition, new Vector3(1, 0, 0), 1f);
+            }
+        }
+        return false;
+    }
 
     // Update is called once per frame
     private void Update()
@@ -28,36 +65,28 @@ public class PlayerInput : MonoBehaviour
         if (up)
         {
             Debug.Log("up");
-            var allowed = Physics.Raycast(newPosition + new Vector3(0, 1, 1), new Vector3(0, -2, 0));
-            allowed &= !Physics.Raycast(newPosition, new Vector3(0, 0, 1), 1f);
-            if (allowed)
+            if (CanMove(newPosition, MoveDirections.UP))
                 newPosition += new Vector3(0, 0, 1);
         }
 
         if (down)
         {
             Debug.Log("down");
-            var allowed = Physics.Raycast(newPosition + new Vector3(0, 1, -1), new Vector3(0, -2, 0));
-            allowed &= !Physics.Raycast(newPosition, new Vector3(0, 0, -1), 1f);
-            if (allowed)
+            if (CanMove(newPosition, MoveDirections.DOWN))
                 newPosition += new Vector3(0, 0, -1);
         }
 
         if (left)
         {
             Debug.Log("left");
-            var allowed = Physics.Raycast(newPosition + new Vector3(-1, 1, 0), new Vector3(0, -2, 0));
-            allowed &= !Physics.Raycast(newPosition, new Vector3(-1, 0, 0), 1f);
-            if (allowed)
+            if (CanMove(newPosition, MoveDirections.LEFT))
                 newPosition += new Vector3(-1, 0, 0);
         }
 
         if (right)
         {
             Debug.Log("right");
-            var allowed = Physics.Raycast(newPosition + new Vector3(1, 1, 0), new Vector3(0, -2, 0));
-            allowed &= !Physics.Raycast(newPosition, new Vector3(1, 0, 0), 1f);
-            if (allowed)
+            if (CanMove(newPosition, MoveDirections.RIGTH))
                 newPosition += new Vector3(1, 0, 0);
         }
 
