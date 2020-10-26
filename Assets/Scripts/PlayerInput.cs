@@ -27,24 +27,33 @@ public class PlayerInput : MonoBehaviour
 
         var newPosition = _rigidbody.position;
 
+
         if (up)
         {
-            newPosition += new Vector3(0, 0, 1);
+            var allowed = Physics.Raycast(newPosition, new Vector3(0, -0.5f, 1));
+            if (allowed)
+                newPosition += new Vector3(0, 0, 1);
         }
 
         if (down)
         {
-            newPosition += new Vector3(0, 0, -1);
+            var allowed = Physics.Raycast(newPosition, new Vector3(0, -0.5f, -1));
+            if (allowed)
+                newPosition += new Vector3(0, 0, -1);
         }
 
         if (left)
         {
-            newPosition += new Vector3(-1, 0, 0);
+            var allowed = Physics.Raycast(newPosition, new Vector3(-1, -0.5f, 0));
+            if (allowed)
+                newPosition += new Vector3(-1, 0, 0);
         }
 
         if (right)
         {
-            newPosition += new Vector3(1, 0, 0);
+            var allowed = Physics.Raycast(newPosition, new Vector3(1, -0.5f, 0));
+            if (allowed)
+                newPosition += new Vector3(1, 0, 0);
         }
 
         _rigidbody.MovePosition(newPosition);
