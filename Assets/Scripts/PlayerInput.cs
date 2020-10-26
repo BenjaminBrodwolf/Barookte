@@ -6,11 +6,6 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour
 {
     private Rigidbody _rigidbody;
-    private bool upSet = false;
-    private bool downSet = false;
-    private bool leftSet = false;
-    private bool rightSet = false;
-
 
     private void Awake()
     {
@@ -18,7 +13,7 @@ public class PlayerInput : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         var up = Input.GetKeyDown(KeyCode.UpArrow);
         var down = Input.GetKeyDown(KeyCode.DownArrow);
@@ -26,32 +21,40 @@ public class PlayerInput : MonoBehaviour
         var right = Input.GetKeyDown(KeyCode.RightArrow);
 
         var newPosition = _rigidbody.position;
-
+        
 
         if (up)
         {
+            Debug.Log("up");
             var allowed = Physics.Raycast(newPosition, new Vector3(0, -0.5f, 1));
+            allowed &= !Physics.Raycast(newPosition, new Vector3(0, 0, 1),1f);
             if (allowed)
                 newPosition += new Vector3(0, 0, 1);
         }
 
         if (down)
         {
+            Debug.Log("down");
             var allowed = Physics.Raycast(newPosition, new Vector3(0, -0.5f, -1));
+            allowed &= !Physics.Raycast(newPosition, new Vector3(0, 0, -1),1f);
             if (allowed)
                 newPosition += new Vector3(0, 0, -1);
         }
 
         if (left)
         {
+            Debug.Log("left");
             var allowed = Physics.Raycast(newPosition, new Vector3(-1, -0.5f, 0));
+            allowed &= !Physics.Raycast(newPosition, new Vector3(-1, 0, 0),1f);
             if (allowed)
                 newPosition += new Vector3(-1, 0, 0);
         }
 
         if (right)
         {
+            Debug.Log("right");
             var allowed = Physics.Raycast(newPosition, new Vector3(1, -0.5f, 0));
+            allowed &= !Physics.Raycast(newPosition, new Vector3(1, 0, 0),1f);
             if (allowed)
                 newPosition += new Vector3(1, 0, 0);
         }
