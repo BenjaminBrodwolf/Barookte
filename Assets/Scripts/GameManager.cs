@@ -1,27 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
-    private BoardBuilder boardManager;
+    private BoardBuilder _boardManager;
 
-    private GameObject player;
+    private GameObject _player;
     private PlayerMovement _playerMovement;
 
-    private GameObject[] enemies;
+    private GameObject[] _enemies;
+    private EnemyMovement[] _enemyMovements;
 
     // Start is called before the first frame update
     void Start()
     {
-        boardManager = GetComponentInChildren<BoardBuilder>();
-        boardManager.buildBoard();
+        _boardManager = GetComponentInChildren<BoardBuilder>();
+        _boardManager.buildBoard();
 
-        player = GameObject.FindGameObjectWithTag("Player");
-        _playerMovement = player.GetComponent<PlayerMovement>();
-        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        _player = GameObject.FindGameObjectWithTag("Player");
+        _playerMovement = _player.GetComponent<PlayerMovement>();
+        _enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        _enemyMovements = new EnemyMovement[_enemies.Length];
+        for (var index = 0; index < _enemies.Length; index++)
+        {
+            var enemy = _enemies[index];
+            _enemyMovements[index] = enemy.GetComponent<EnemyMovement>();
+        }
     }
 
     // Update is called once per frame
@@ -39,7 +43,7 @@ public class GameManager : MonoBehaviour
         if (up)
         {
             Debug.Log("up");
-            canPlayerMove = _playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Up);
+            canPlayerMove = _playerMovement.CanMove(_player.transform.position, PlayerMovement.MoveDirections.Up);
             if (canPlayerMove)
             {
                 newPlayerPosition = _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Up);
@@ -50,7 +54,7 @@ public class GameManager : MonoBehaviour
         if (down)
         {
             Debug.Log("down");
-            canPlayerMove = _playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Down);
+            canPlayerMove = _playerMovement.CanMove(_player.transform.position, PlayerMovement.MoveDirections.Down);
             if (canPlayerMove)
             {
                 newPlayerPosition = _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Down);
@@ -61,7 +65,7 @@ public class GameManager : MonoBehaviour
         if (left)
         {
             Debug.Log("left");
-            canPlayerMove = _playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Left);
+            canPlayerMove = _playerMovement.CanMove(_player.transform.position, PlayerMovement.MoveDirections.Left);
             if (canPlayerMove)
             {
                 newPlayerPosition = _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Left);
@@ -72,23 +76,25 @@ public class GameManager : MonoBehaviour
         if (right)
         {
             Debug.Log("right");
-            canPlayerMove = _playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Rigth);
+            canPlayerMove = _playerMovement.CanMove(_player.transform.position, PlayerMovement.MoveDirections.Rigth);
             if (canPlayerMove)
             {
                 newPlayerPosition = _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Rigth);
                 hasPlayerMoved = true;
             }
         }
-       
         
         if (hasPlayerMoved)
         {
-            foreach (var enemy in enemies)
+            for (var index = 0; index < _enemies.Length; index++)
             {
-                var enemyMovement = enemy.GetComponent<EnemyMovement>();
-                var moved = enemyMovement.MoveEnemy(newPlayerPosition);
+                var moved = _enemyMovements[index].MoveEnemy(newPlayerPosition);
+                
+                if (Math.Abs(moved.x - newPlayerPosition.x) < 0.01 && Math.Abs(moved.z - newPlayerPosition.z) < 0.01)
+                {
+                    Debug.Log("Game Over!");
+                }
             }
-            
         }
     }
 }
