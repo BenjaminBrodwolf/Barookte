@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
 
         var hasPlayerMoved = false;
         var canPlayerMove = false;
+        var newPlayerPosition = Vector3.zero;
 
         if (up)
         {
@@ -40,7 +42,7 @@ public class GameManager : MonoBehaviour
             canPlayerMove = _playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Up);
             if (canPlayerMove)
             {
-                _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Up);
+                newPlayerPosition = _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Up);
                 hasPlayerMoved = true;
             }
         }
@@ -51,7 +53,7 @@ public class GameManager : MonoBehaviour
             canPlayerMove = _playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Down);
             if (canPlayerMove)
             {
-                _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Down);
+                newPlayerPosition = _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Down);
                 hasPlayerMoved = true;
             }
         }
@@ -62,7 +64,7 @@ public class GameManager : MonoBehaviour
             canPlayerMove = _playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Left);
             if (canPlayerMove)
             {
-                _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Left);
+                newPlayerPosition = _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Left);
                 hasPlayerMoved = true;
             }
         }
@@ -73,7 +75,7 @@ public class GameManager : MonoBehaviour
             canPlayerMove = _playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Rigth);
             if (canPlayerMove)
             {
-                _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Rigth);
+                newPlayerPosition = _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Rigth);
                 hasPlayerMoved = true;
             }
         }
@@ -81,7 +83,12 @@ public class GameManager : MonoBehaviour
         
         if (hasPlayerMoved)
         {
-            //trigger movement on enemies
+            foreach (var enemy in enemies)
+            {
+                var enemyMovement = enemy.GetComponent<EnemyMovement>();
+                var moved = enemyMovement.MoveEnemy(newPlayerPosition);
+            }
+            
         }
     }
 }

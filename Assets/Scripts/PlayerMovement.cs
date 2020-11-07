@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
         return false;
     }
 
-    public void MovePlayer(MoveDirections moveDirection)
+    public Vector3 MovePlayer(MoveDirections moveDirection)
     {
         var newPosition = _rigidbody.position;
         switch (moveDirection)
@@ -73,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         _rigidbody.MovePosition(newPosition);
+        return newPosition;
     }
     
 }
