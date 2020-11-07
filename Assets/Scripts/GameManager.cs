@@ -6,8 +6,9 @@ using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
-    private BoardBuilder boardManager;
-
+    // private BoardBuilder boardManager;
+    private LevelGenerator levelGenerator;
+    
     private GameObject player;
     private PlayerMovement _playerMovement;
 
@@ -16,8 +17,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        boardManager = GetComponentInChildren<BoardBuilder>();
-        boardManager.buildBoard();
+        levelGenerator = GetComponentInChildren<LevelGenerator>();
+        levelGenerator.GenerateLevel();
 
         player = GameObject.FindGameObjectWithTag("Player");
         _playerMovement = player.GetComponent<PlayerMovement>();
