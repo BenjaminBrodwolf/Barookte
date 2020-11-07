@@ -42,7 +42,7 @@ public class EnemyMovement : MonoBehaviour
         qAll.Add(enemyPosition2D);
         dist.Add(enemyPosition2D, 0);
         ExplorePosition(enemyPosition2D);
-        
+
         while (q.Any())
         {
             var u = q.First();
@@ -174,11 +174,14 @@ public class EnemyMovement : MonoBehaviour
     private bool IsOkayToWalkThere(Vector2 positionToWalkTo, Vector2 currentPosition)
     {
         var raycastDirection = new Vector3(0, -4, 0);
-        var positionToWalk3D = new Vector3(positionToWalkTo.x, 2, positionToWalkTo.y);
-        var lookDirection = (new Vector3(currentPosition.x, 2, currentPosition.y)) - positionToWalk3D;
+        var positionToWalk3D = new Vector3(positionToWalkTo.x, 1, positionToWalkTo.y);
+        var currentPosition3D = (new Vector3(currentPosition.x, 1, currentPosition.y));
+        var lookDirection = (currentPosition3D - positionToWalk3D);
+        
         var beneath = Physics.Raycast(positionToWalk3D, raycastDirection);
-        Debug.DrawRay(positionToWalk3D, raycastDirection, Color.black, 2);
-        var infront = !Physics.Raycast(positionToWalk3D, lookDirection, 1f);
+        //Debug.DrawRay(positionToWalk3D, raycastDirection, Color.black, 2);
+        var infront = !Physics.Raycast(positionToWalk3D, lookDirection, 0.3f);
+        //Debug.DrawRay(positionToWalk3D, lookDirection, Color.cyan, 2);
         return beneath && infront;
     }
 }
