@@ -35,13 +35,14 @@ public class EnemyMovement : MonoBehaviour
         qAll = new HashSet<Vector2>();
         prev = new Dictionary<Vector2, Vector2>();
 
-        var positionOfEnemy = transform.position;
+        var positionOfEnemy = _rigidbody.transform.position;
         var enemyPosition2D = new Vector2(((int) positionOfEnemy.x) + 0.5f, ((int) positionOfEnemy.z) + 0.5f);
 
-        ExplorePosition(enemyPosition2D);
-
+        q.Add(enemyPosition2D);
+        qAll.Add(enemyPosition2D);
         dist.Add(enemyPosition2D, 0);
-
+        ExplorePosition(enemyPosition2D);
+        
         while (q.Any())
         {
             var u = q.First();
