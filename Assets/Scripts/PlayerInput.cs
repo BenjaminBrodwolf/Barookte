@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -12,36 +13,36 @@ public class PlayerInput : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    enum MoveDirections
+    public enum MoveDirections
     {
-        UP,
-        RIGTH,
-        DOWN,
-        LEFT
+        Up,
+        Rigth,
+        Down,
+        Left
     }
 
-    private bool CanMove(Vector3 currentPosition, MoveDirections md)
+    public bool CanMove(Vector3 currentPosition, MoveDirections md)
     {
         var raycastDirection = new Vector3(0, -2, 0);
         
         switch (md)
         {
-            case MoveDirections.UP:
+            case MoveDirections.Up:
             {
                 return Physics.Raycast(currentPosition + new Vector3(0, 1, 1), raycastDirection)
                        && !Physics.Raycast(currentPosition, new Vector3(0, 0, 1), 1f);
             }
-            case MoveDirections.DOWN:
+            case MoveDirections.Down:
             {
                 return Physics.Raycast(currentPosition + new Vector3(0, 1, -1), raycastDirection)
                        && !Physics.Raycast(currentPosition, new Vector3(0, 0, -1), 1f);
             }
-            case MoveDirections.LEFT:
+            case MoveDirections.Left:
             {
                 return Physics.Raycast(currentPosition + new Vector3(-1, 1, 0), raycastDirection)
                        && !Physics.Raycast(currentPosition, new Vector3(-1, 0, 0), 1f);
             }
-            case MoveDirections.RIGTH:
+            case MoveDirections.Rigth:
             {
                 return Physics.Raycast(currentPosition + new Vector3(1, 1, 0), raycastDirection)
                        && !Physics.Raycast(currentPosition, new Vector3(1, 0, 0), 1f);
@@ -50,46 +51,28 @@ public class PlayerInput : MonoBehaviour
         return false;
     }
 
-    // Update is called once per frame
-    private void Update()
+    public void MovePlayer(MoveDirections moveDirection)
     {
-        var up = Input.GetKeyDown(KeyCode.UpArrow);
-        var down = Input.GetKeyDown(KeyCode.DownArrow);
-        var left = Input.GetKeyDown(KeyCode.LeftArrow);
-        var right = Input.GetKeyDown(KeyCode.RightArrow);
-
         var newPosition = _rigidbody.position;
-
-
-        // Debug.DrawRay(newPosition + new Vector3(0, 1, 1), new Vector3(0, -2, 0), Color.red);
-        if (up)
+        switch (moveDirection)
         {
-            Debug.Log("up");
-            if (CanMove(newPosition, MoveDirections.UP))
-                newPosition += new Vector3(0, 0, 1);
-        }
-
-        if (down)
-        {
-            Debug.Log("down");
-            if (CanMove(newPosition, MoveDirections.DOWN))
-                newPosition += new Vector3(0, 0, -1);
-        }
-
-        if (left)
-        {
-            Debug.Log("left");
-            if (CanMove(newPosition, MoveDirections.LEFT))
+            case MoveDirections.Left:
                 newPosition += new Vector3(-1, 0, 0);
-        }
-
-        if (right)
-        {
-            Debug.Log("right");
-            if (CanMove(newPosition, MoveDirections.RIGTH))
+                break;
+            case MoveDirections.Up:
+                newPosition += new Vector3(0, 0, 1);
+                break;
+            case MoveDirections.Rigth:
                 newPosition += new Vector3(1, 0, 0);
+                break;
+            case MoveDirections.Down:
+                newPosition += new Vector3(0, 0, -1);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(moveDirection), moveDirection, null);
         }
 
         _rigidbody.MovePosition(newPosition);
     }
+    
 }

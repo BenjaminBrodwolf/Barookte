@@ -35,7 +35,7 @@ public class BoardBuilder : MonoBehaviour
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
 
-    private void Start()
+    public void buildBoard()
     {
         _height = _board.GetLength(0);
         _width = _board.GetLength(1);
