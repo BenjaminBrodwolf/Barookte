@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerInput : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody _rigidbody;
 
