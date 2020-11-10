@@ -213,59 +213,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 140, y: -60, z: 0}
---- !u!1 &782257016
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 782257018}
-  - component: {fileID: 782257017}
-  m_Layer: 0
-  m_Name: BoardManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &782257017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 782257016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99313f8b70b0147d89fd09c3e5da8d94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waterPrefab: {fileID: 4749959674409638151, guid: 3c73ce46d1a274b3fae51894673763c6,
-    type: 3}
-  earthPrefab: {fileID: 327045172441070113, guid: 03c63cae044b14918ba2df943ec3fb88,
-    type: 3}
-  bridgePrefab: {fileID: 3945337716133543953, guid: bfea87939c97e469c9f908c834b727f2,
-    type: 3}
-  playerPrefab: {fileID: 6210959608728704983, guid: 47a5e7012d9f3431ea79e93116afb312,
-    type: 3}
-  enemyPrefab: {fileID: 219566179579972892, guid: eb36058743f4a4c82a30e8030b3d0914,
-    type: 3}
---- !u!4 &782257018
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 782257016}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -16.745281, y: 0.9514942, z: 1.9035854}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1357590547}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1357590545
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,7 +254,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1669910736}
-  - {fileID: 782257018}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -440,6 +386,9 @@ MonoBehaviour:
       type: 3}
   - pixelColor: {r: 1, g: 0.2627451, b: 0, a: 1}
     prefab: {fileID: 219566179579972892, guid: eb36058743f4a4c82a30e8030b3d0914, type: 3}
+  - pixelColor: {r: 1, g: 1, b: 0, a: 1}
+    prefab: {fileID: 7828212219657364503, guid: f301bca7cbebb7e4ba610eb009c57587,
+      type: 3}
 --- !u!4 &1669910736
 Transform:
   m_ObjectHideFlags: 0

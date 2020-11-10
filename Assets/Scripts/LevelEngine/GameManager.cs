@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerMovement = player.GetComponent<PlayerMovement>();
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        
+        
     }
 
     // Update is called once per frame
@@ -40,43 +42,43 @@ public class GameManager : MonoBehaviour
         if (up)
         {
             Debug.Log("up");
-            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Up);
+            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.Directions.Up);
             if (canPlayerMove)
             {
-                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.MoveDirections.Up);
+                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.Directions.Up);
                 hasPlayerMoved = true;
             }
         }
 
         if (down)
         {
-            Debug.Log("down");
-            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Down);
+            // Debug.Log("down");
+            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.Directions.Down);
             if (canPlayerMove)
             {
-                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.MoveDirections.Down);
+                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.Directions.Down);
                 hasPlayerMoved = true;
             }
         }
 
         if (left)
         {
-            Debug.Log("left");
-            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Left);
+            // Debug.Log("left");
+            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.Directions.Left);
             if (canPlayerMove)
             {
-                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.MoveDirections.Left);
+                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.Directions.Left);
                 hasPlayerMoved = true;
             }
         }
 
         if (right)
         {
-            Debug.Log("right");
-            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Rigth);
+            // Debug.Log("right");
+            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.Directions.Rigth);
             if (canPlayerMove)
             {
-                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.MoveDirections.Rigth);
+                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.Directions.Rigth);
                 hasPlayerMoved = true;
             }
         }

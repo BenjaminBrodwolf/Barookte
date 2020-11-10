@@ -4,7 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Item
+  - Undefined
   - Enemy
+  - Log
+  - Rock
   layers:
   - Default
   - TransparentFX
@@ -14,9 +18,9 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
+  - Earth
+  - OnEarth
+  - MoveableItem
   - 
   - 
   - 

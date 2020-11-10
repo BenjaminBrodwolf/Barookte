@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody _rigidbody;
-
+    
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    public enum MoveDirections
+    public enum Directions
     {
         Up,
         Rigth,
@@ -21,59 +22,91 @@ public class PlayerMovement : MonoBehaviour
         Left
     }
 
-    public bool CanMove(Vector3 currentPosition, MoveDirections md)
+
+    public bool CanMove(Vector3 currentPosition, Directions md)
     {
         var raycastDirection = new Vector3(0, -2, 0);
-        
+
         switch (md)
         {
-            case MoveDirections.Up:
+            case Directions.Up:
             {
+                var wannaMoveDirection = new Vector3(0, 0, 1);
+                ReactToMoveableItem(currentPosition, wannaMoveDirection);
+
+
                 return Physics.Raycast(currentPosition + new Vector3(0, 1, 1), raycastDirection)
                        && !Physics.Raycast(currentPosition, new Vector3(0, 0, 1), 1f);
             }
-            case MoveDirections.Down:
+            case Directions.Down:
             {
+                var wannaMoveDirection = new Vector3(0, 0, -1);
+                ReactToMoveableItem(currentPosition, wannaMoveDirection);
+
+
                 return Physics.Raycast(currentPosition + new Vector3(0, 1, -1), raycastDirection)
                        && !Physics.Raycast(currentPosition, new Vector3(0, 0, -1), 1f);
             }
-            case MoveDirections.Left:
+            case Directions.Left:
             {
+                var wannaMoveDirection = new Vector3(-1, 0, 0);
+                ReactToMoveableItem(currentPosition, wannaMoveDirection);
+
+
                 return Physics.Raycast(currentPosition + new Vector3(-1, 1, 0), raycastDirection)
                        && !Physics.Raycast(currentPosition, new Vector3(-1, 0, 0), 1f);
             }
-            case MoveDirections.Rigth:
+            case Directions.Rigth:
             {
+                var wannaMoveDirection = new Vector3(1, 0, 0);
+                ReactToMoveableItem(currentPosition, wannaMoveDirection);
+
                 return Physics.Raycast(currentPosition + new Vector3(1, 1, 0), raycastDirection)
                        && !Physics.Raycast(currentPosition, new Vector3(1, 0, 0), 1f);
             }
         }
+
         return false;
     }
 
-    public Vector3 MovePlayer(MoveDirections moveDirection)
+    public Vector3 MovePlayer(Directions direction)
     {
         var newPosition = _rigidbody.position;
-        switch (moveDirection)
+        switch (direction)
         {
-            case MoveDirections.Left:
+            case Directions.Left:
                 newPosition += new Vector3(-1, 0, 0);
                 break;
-            case MoveDirections.Up:
+            case Directions.Up:
                 newPosition += new Vector3(0, 0, 1);
                 break;
-            case MoveDirections.Rigth:
+            case Directions.Rigth:
                 newPosition += new Vector3(1, 0, 0);
                 break;
-            case MoveDirections.Down:
+            case Directions.Down:
                 newPosition += new Vector3(0, 0, -1);
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(moveDirection), moveDirection, null);
+                throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
         }
 
         _rigidbody.MovePosition(newPosition);
         return newPosition;
     }
-    
+
+    public void ReactToMoveableItem(Vector3 currentPosition, Vector3 newDirection)
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(currentPosition, newDirection, out hit, 1f, LayerMask.GetMask("MoveableItem")))
+        {
+            var moveableItemScript = hit.collider.GetComponent<MoveableItem>();
+
+            if (moveableItemScript.IsPlayerInTriggerToItem())
+            {
+                // player push that Item forward the player pressed button
+                moveableItemScript.PushItemInDirection(newDirection);
+            }
+        }
+    }
 }

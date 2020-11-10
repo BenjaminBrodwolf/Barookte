@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,13 +10,13 @@ public class LevelGenerator : MonoBehaviour
     public Texture2D mapTexture;
     public PixelToObject[] pixelColorMappings;
     private Color pixelColor;
-    
+
+    private int Earth = 8;
+    private int OnEarth = 9;
+    private int MoveAbleItem = 10;
 
     public void GenerateLevel()
     {
-        // Debug.Log("GenerateLevel");
-
-        // Scan whole Texture and get positions of objects
         for (int i = 0; i < mapTexture.width; i++)
         {
             for (int j = 0; j < mapTexture.height; j++)
@@ -27,29 +28,23 @@ public class LevelGenerator : MonoBehaviour
 
     void GenerateObject(int x, int y)
     {
-        // Debug.Log("GenerateObject");
-
-        // Read pixel color
         pixelColor = mapTexture.GetPixel(x, y);
         if (pixelColor.a == 0)
         {
-            // Do nothing
             return;
         }
-
-
+        
         foreach (PixelToObject pixelColorMapping in pixelColorMappings)
         {
-            // Scan pixelColorMappings Array for matching color maping
+            
             if (pixelColorMapping.pixelColor.Equals(pixelColor))
             {
-                if (pixelColorMapping.prefab.name.Equals("Player") ||
-                    pixelColorMapping.prefab.name.Equals("Enemy"))
+                if (pixelColorMapping.prefab.layer == OnEarth || pixelColorMapping.prefab.layer == MoveAbleItem )
                 {
                     PlaceTile(y, x, earthPrefab);
                     PlacePlayer(y, x, pixelColorMapping.prefab);
                 }
-                else
+                else if (pixelColorMapping.prefab.layer == Earth)
                 {
                     PlaceTile(y, x, pixelColorMapping.prefab);
 
@@ -73,10 +68,6 @@ public class LevelGenerator : MonoBehaviour
 
         var newBlock = Instantiate(prefab, initialPosition + new Vector3(globalX, 0, globalZ), Quaternion.identity);
         newBlock.transform.SetParent(this.transform);
-
-
-        // Debug.Log(prefab.GetType());
-        Debug.Log(prefab.name);
     }
 
     private void PlacePlayer(int y, int x, GameObject prefab)
