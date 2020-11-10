@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     private LevelGenerator levelGenerator;
     
     private GameObject player;
-    private PlayerMovement _playerMovement;
+    private PlayerMovement playerMovement;
 
     private GameObject[] enemies;
 
@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
         levelGenerator.GenerateLevel();
 
         player = GameObject.FindGameObjectWithTag("Player");
-        _playerMovement = player.GetComponent<PlayerMovement>();
+        playerMovement = player.GetComponent<PlayerMovement>();
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
     }
 
@@ -40,10 +40,10 @@ public class GameManager : MonoBehaviour
         if (up)
         {
             Debug.Log("up");
-            canPlayerMove = _playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Up);
+            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Up);
             if (canPlayerMove)
             {
-                newPlayerPosition = _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Up);
+                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.MoveDirections.Up);
                 hasPlayerMoved = true;
             }
         }
@@ -51,10 +51,10 @@ public class GameManager : MonoBehaviour
         if (down)
         {
             Debug.Log("down");
-            canPlayerMove = _playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Down);
+            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Down);
             if (canPlayerMove)
             {
-                newPlayerPosition = _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Down);
+                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.MoveDirections.Down);
                 hasPlayerMoved = true;
             }
         }
@@ -62,10 +62,10 @@ public class GameManager : MonoBehaviour
         if (left)
         {
             Debug.Log("left");
-            canPlayerMove = _playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Left);
+            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Left);
             if (canPlayerMove)
             {
-                newPlayerPosition = _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Left);
+                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.MoveDirections.Left);
                 hasPlayerMoved = true;
             }
         }
@@ -73,10 +73,10 @@ public class GameManager : MonoBehaviour
         if (right)
         {
             Debug.Log("right");
-            canPlayerMove = _playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Rigth);
+            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.MoveDirections.Rigth);
             if (canPlayerMove)
             {
-                newPlayerPosition = _playerMovement.MovePlayer(PlayerMovement.MoveDirections.Rigth);
+                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.MoveDirections.Rigth);
                 hasPlayerMoved = true;
             }
         }
