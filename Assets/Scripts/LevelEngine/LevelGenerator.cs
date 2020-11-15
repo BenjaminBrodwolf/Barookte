@@ -33,13 +33,12 @@ public class LevelGenerator : MonoBehaviour
         {
             return;
         }
-        
+
         foreach (PixelToObject pixelColorMapping in pixelColorMappings)
         {
-            
-            if (pixelColorMapping.pixelColor.Equals(pixelColor))
+            if (colorEquals(pixelColorMapping.pixelColor, pixelColor))
             {
-                if (pixelColorMapping.prefab.layer == OnEarth || pixelColorMapping.prefab.layer == MoveAbleItem )
+                if (pixelColorMapping.prefab.layer == OnEarth || pixelColorMapping.prefab.layer == MoveAbleItem)
                 {
                     PlaceTile(y, x, earthPrefab);
                     PlacePlayer(y, x, pixelColorMapping.prefab);
@@ -47,10 +46,19 @@ public class LevelGenerator : MonoBehaviour
                 else if (pixelColorMapping.prefab.layer == Earth)
                 {
                     PlaceTile(y, x, pixelColorMapping.prefab);
-
                 }
             }
         }
+    }
+
+    private bool colorEquals(Color c0, Color c1)
+    {
+        var eps = 0.001;
+
+        return Math.Abs(c0.a - c1.a) < eps
+               && Math.Abs(c0.b - c1.b) < eps
+               && Math.Abs(c0.g - c1.g) < eps 
+               && Math.Abs(c0.r - c1.r) < eps;
     }
 
 

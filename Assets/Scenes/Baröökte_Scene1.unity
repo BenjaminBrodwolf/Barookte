@@ -390,6 +390,11 @@ MonoBehaviour:
   - pixelColor: {r: 1, g: 1, b: 0, a: 1}
     prefab: {fileID: 7828212219657364503, guid: f301bca7cbebb7e4ba610eb009c57587,
       type: 3}
+  - pixelColor: {r: 0.53333336, g: 0, b: 0.10588236, a: 1}
+    prefab: {fileID: 7828212219657364503, guid: f301bca7cbebb7e4ba610eb009c57587,
+      type: 3}
+  - pixelColor: {r: 1, g: 0, b: 0, a: 1}
+    prefab: {fileID: 219566179579972892, guid: eb36058743f4a4c82a30e8030b3d0914, type: 3}
 --- !u!4 &1669910736
 Transform:
   m_ObjectHideFlags: 0
