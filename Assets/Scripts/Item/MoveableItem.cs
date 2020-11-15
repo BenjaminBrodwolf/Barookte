@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveableItem : MonoBehaviour
 {
-    private Rigidbody rigidbody;
+    private new Rigidbody rigidbody;
     private bool playerTrigger;
     
     public bool IsPlayerInTriggerToItem() => playerTrigger;
@@ -16,7 +16,7 @@ public class MoveableItem : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
             Debug.Log("Trigger with Player !");
             playerTrigger = true;
@@ -25,23 +25,17 @@ public class MoveableItem : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
             playerTrigger = false;
         }
     }
-
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
+    
     public void PushItemInDirection(Vector3 newDirection)
     {
-        rigidbody.MovePosition(transform.position + newDirection);
+        if (!Physics.Raycast(transform.position, newDirection, 1f))
+        {
+            rigidbody.MovePosition(transform.position + newDirection);
+        }
     }
 }
