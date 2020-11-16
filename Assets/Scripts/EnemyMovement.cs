@@ -1,185 +1,189 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
     private Rigidbody _rigidbody;
+    
+    private List<Vertex> q;
 
+    private List<Vertex> vertices = new List<Vertex>();
+
+    private List<Vector2> takenEnemyPositions;
+    
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    public Vector3 MoveEnemy(Vector3 playerPosition)
+    public Vector3 MoveEnemy(Vector3 playerPosition, List<Vector2> takenEnemyPositions)
     {
+        this.takenEnemyPositions = takenEnemyPositions;
         var path = GetFastestPath(playerPosition);
-        var newPosition = path.Last();
-        var new3DPosition = new Vector3(newPosition.x, _rigidbody.position.y, newPosition.y);
+        var nextVertex = path.Last();
+        var new3DPosition = new Vector3(nextVertex.position.x, _rigidbody.position.y, nextVertex.position.y);
         _rigidbody.MovePosition(new3DPosition);
         return new3DPosition;
     }
 
-    private HashSet<Vector2> q;
-    private HashSet<Vector2> qAll;
-    private Dictionary<Vector2, int> dist;
-    private Dictionary<Vector2, Vector2> prev;
 
     //Djikstra
-    public List<Vector2> GetFastestPath(Vector3 playerPosition)
+    public List<Vertex> GetFastestPath(Vector3 playerPosition)
     {
-        dist = new Dictionary<Vector2, int>();
-        q = new HashSet<Vector2>();
-        qAll = new HashSet<Vector2>();
-        prev = new Dictionary<Vector2, Vector2>();
+        vertices = new List<Vertex>();
 
         var positionOfEnemy = _rigidbody.transform.position;
         var enemyPosition2D = new Vector2(((int) positionOfEnemy.x) + 0.5f, ((int) positionOfEnemy.z) + 0.5f);
 
-        q.Add(enemyPosition2D);
-        qAll.Add(enemyPosition2D);
-        dist.Add(enemyPosition2D, 0);
-        ExplorePosition(enemyPosition2D);
+        var startVertex = new Vertex(enemyPosition2D);
+        startVertex.distance = 0;
+        vertices.Add(startVertex);
 
+        ExplorePosition(startVertex);
+
+        q = new List<Vertex>(vertices);
+        
         while (q.Any())
         {
-            var u = q.First();
-            q.Remove(u);
-
-            var neighbours = ExplorePosition(u);
-
-            foreach (var neighbour in neighbours)
+            q.Sort();
+            var v = q.First();
+            q.Remove(v);
+            
+            foreach (var neighbour in v.neighbours)
             {
-                int distance = dist[u] + 1;
-                if (distance < dist[neighbour])
+                int distance = v.distance + 1;
+                if (distance < neighbour.distance)
                 {
-                    dist[neighbour] = distance;
-                    prev[neighbour] = u;
+                    neighbour.distance = distance;
+                    neighbour.previous = v;
                 }
             }
         }
 
         var playerPosition2D = new Vector2(((int) playerPosition.x) + 0.5f, ((int) playerPosition.z) + 0.5f);
 
-        var path = new List<Vector2>();
-        var currentCoord = playerPosition2D;
-        while (currentCoord != enemyPosition2D)
+        var path = new List<Vertex>();
+        var current = vertices.First(x => x.position == playerPosition2D);
+
+        while (!Equals(current, startVertex))
         {
-            var previous = prev[currentCoord];
-            Debug.DrawLine(new Vector3(currentCoord.x, 1, currentCoord.y), new Vector3(previous.x, 1, previous.y),
+            var previous = current.previous;
+            Debug.DrawLine(new Vector3(current.position.x, 1, current.position.y), new Vector3(previous.position.x, 1, previous.position.y),
                 Color.blue, 2);
-            path.Add(currentCoord);
-            currentCoord = prev[currentCoord];
+            path.Add(current);
+            current = previous;
         }
 
         return path;
     }
-
-    private List<Vector2> ExplorePosition(Vector2 enemyPosition2D)
+    
+    private void ExplorePosition(Vertex currentVertex)
     {
-        var neighbours = new List<Vector2>();
-        var enemyPosition2DxPlus = enemyPosition2D + new Vector2(1f, 0f);
-        var enemyPosition2DyPlus = enemyPosition2D + new Vector2(0f, 1f);
-        var enemyPosition2DxMinus = enemyPosition2D + new Vector2(-1f, 0f);
-        var enemyPosition2DyMinus = enemyPosition2D + new Vector2(0, -1f);
 
-        var walkXPlus = IsOkayToWalkThere(enemyPosition2DxPlus, enemyPosition2D);
-        var walkXMinus = IsOkayToWalkThere(enemyPosition2DxMinus, enemyPosition2D);
-        var walkYPlus = IsOkayToWalkThere(enemyPosition2DyPlus, enemyPosition2D);
-        var walkYMinus = IsOkayToWalkThere(enemyPosition2DyMinus, enemyPosition2D);
+        var vertex = vertices.First(x => x.Equals(currentVertex));
 
-        var addXPlus = false;
-        var addXMinus = false;
-        var addYPlus = false;
-        var addYMinus = false;
+        var enemyPosition2DxPlus = currentVertex.position + new Vector2(1f, 0f);
+        var enemyPosition2DyPlus = currentVertex.position + new Vector2(0f, 1f);
+        var enemyPosition2DxMinus = currentVertex.position + new Vector2(-1f, 0f);
+        var enemyPosition2DyMinus = currentVertex.position + new Vector2(0, -1f);
+
+        var walkXPlus = IsOkayToWalkThere(enemyPosition2DxPlus, currentVertex.position);
+        var walkXMinus = IsOkayToWalkThere(enemyPosition2DxMinus, currentVertex.position);
+        var walkYPlus = IsOkayToWalkThere(enemyPosition2DyPlus, currentVertex.position);
+        var walkYMinus = IsOkayToWalkThere(enemyPosition2DyMinus, currentVertex.position);
 
         if (walkXPlus)
         {
-            if (!qAll.Contains(enemyPosition2DxPlus))
+            Vertex toTest = new Vertex(enemyPosition2DxPlus);
+            Vertex newVertex;
+            if (vertices.Contains(new Vertex(enemyPosition2DxPlus)))
             {
-                q.Add(enemyPosition2DxPlus);
-                qAll.Add(enemyPosition2DxPlus);
+                newVertex = vertices.First(x => x.Equals(toTest));
+            }
+            else
+            {
+                newVertex = toTest;
+                vertices.Add(toTest);
+                ExplorePosition(newVertex);
             }
 
-            addXPlus = true;
-            neighbours.Add(enemyPosition2DxPlus);
+            vertex.neighbours.Add(newVertex);
         }
 
         if (walkXMinus)
         {
-            if (!qAll.Contains(enemyPosition2DxMinus))
+            Vertex toTest = new Vertex(enemyPosition2DxMinus);
+            Vertex newVertex;
+            if (vertices.Contains(new Vertex(enemyPosition2DxMinus)))
             {
-                q.Add(enemyPosition2DxMinus);
-                qAll.Add(enemyPosition2DxMinus);
+                newVertex = vertices.First(x => x.Equals(toTest));
+            }
+            else
+            {
+                newVertex = toTest;
+                vertices.Add(toTest);
+                ExplorePosition(newVertex);
             }
 
-            addXMinus = true;
-            neighbours.Add(enemyPosition2DxMinus);
+            vertex.neighbours.Add(newVertex);
         }
-
 
         if (walkYPlus)
         {
-            if (!qAll.Contains(enemyPosition2DyPlus))
+            Vertex toTest = new Vertex(enemyPosition2DyPlus);
+            Vertex newVertex;
+            if (vertices.Contains(new Vertex(enemyPosition2DyPlus)))
             {
-                q.Add(enemyPosition2DyPlus);
-                qAll.Add(enemyPosition2DyPlus);
+                newVertex = vertices.First(x => x.Equals(toTest));
+            }
+            else
+            {
+                newVertex = toTest;
+                vertices.Add(toTest);
+                ExplorePosition(newVertex);
             }
 
-            addYPlus = true;
-            neighbours.Add(enemyPosition2DyPlus);
+            vertex.neighbours.Add(newVertex);
         }
 
         if (walkYMinus)
         {
-            if (!qAll.Contains(enemyPosition2DyMinus))
+            Vertex toTest = new Vertex(enemyPosition2DyMinus);
+            Vertex newVertex;
+            if (vertices.Contains(new Vertex(enemyPosition2DyMinus)))
             {
-                q.Add(enemyPosition2DyMinus);
-                qAll.Add(enemyPosition2DyMinus);
+                newVertex = vertices.First(x => x.Equals(toTest));
+            }
+            else
+            {
+                newVertex = toTest;
+                vertices.Add(toTest);
+                ExplorePosition(newVertex);
             }
 
-            addYMinus = true;
-            neighbours.Add(enemyPosition2DyMinus);
+            vertex.neighbours.Add(newVertex);
         }
-
-        if (addXPlus)
-        {
-            if (!dist.ContainsKey(enemyPosition2DxPlus))
-                dist.Add(enemyPosition2DxPlus, int.MaxValue);
-        }
-
-        if (addXMinus)
-        {
-            if (!dist.ContainsKey(enemyPosition2DxMinus))
-                dist.Add(enemyPosition2DxMinus, int.MaxValue);
-        }
-
-        if (addYPlus)
-        {
-            if (!dist.ContainsKey(enemyPosition2DyPlus))
-                dist.Add(enemyPosition2DyPlus, int.MaxValue);
-        }
-
-        if (addYMinus)
-        {
-            if (!dist.ContainsKey(enemyPosition2DyMinus))
-                dist.Add(enemyPosition2DyMinus, int.MaxValue);
-        }
-
-        return neighbours;
     }
 
     private bool IsOkayToWalkThere(Vector2 positionToWalkTo, Vector2 currentPosition)
     {
+        if (takenEnemyPositions.Contains(positionToWalkTo))
+        {
+            return false;
+        }
+        
         var raycastDirection = new Vector3(0, -4, 0);
         var positionToWalk3D = new Vector3(positionToWalkTo.x, 1, positionToWalkTo.y);
         var currentPosition3D = (new Vector3(currentPosition.x, 1, currentPosition.y));
         var lookDirection = (currentPosition3D - positionToWalk3D);
-        
+
         var beneath = Physics.Raycast(positionToWalk3D, raycastDirection);
         //Debug.DrawRay(positionToWalk3D, raycastDirection, Color.black, 2);
-        var infront = !Physics.Raycast(positionToWalk3D, lookDirection, 0.3f);
-        //Debug.DrawRay(positionToWalk3D, lookDirection, Color.cyan, 2);
-        return beneath && infront;
+        var inFront = !Physics.Raycast(positionToWalk3D, lookDirection, 0.3f);
+        Debug.DrawRay(positionToWalk3D, lookDirection, Color.cyan, 2);
+        return beneath && inFront;
     }
 }
