@@ -7,24 +7,18 @@ using UnityEngine.Serialization;
 
 public class RaycastBuildingSystem : MonoBehaviour
 {
+    public GameObject BuildedLevel;
     private GameObject ObjToBuild;
     public BuildingObject[] buildingdObjects;
-    // public int ObjToPlaceIndex;
 
     public LayerMask mask;
     int LastPosX, LastPosY, LastPosZ;
     Vector3 mousePos;
-
-    private GameObject eartBtn;
-    private GameObject waterBtn;
-
-
+    
+    
     void Start()
     {
         ObjToBuild = Instantiate(buildingdObjects[0].ObjToPlace, new Vector3(0, 0.5f, 0), Quaternion.identity);
-
-        // eartBtn = GameObject.Find("EarthBtn");
-        // waterBtn = GameObject.Find("WaterBtn");
 
         foreach (var buildingdObject in buildingdObjects)
         {
@@ -41,6 +35,8 @@ public class RaycastBuildingSystem : MonoBehaviour
         mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
         RaycastHit hit;
+        
+        // Debug.DrawLine(transform.position, mousePos , Color.red);
 
         if (EventSystem.current.IsPointerOverGameObject())
         {
@@ -49,17 +45,17 @@ public class RaycastBuildingSystem : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
         {
-            int PosX = (int) Mathf.Round(hit.point.x);
-            int PosY = (int) Mathf.Round(hit.point.y);
-            int PosZ = (int) Mathf.Round(hit.point.z);
+            int posX = (int) Mathf.Round(hit.point.x);
+            int posY = (int) Mathf.Round(hit.point.y);
+            int posZ = (int) Mathf.Round(hit.point.z);
 
 //			Debug.Log("X: " + PosX + " & Z: " + PosZ);
-            if (PosX != LastPosX || PosY != LastPosY || PosZ != LastPosZ)
+            if (posX != LastPosX || posY != LastPosY || posZ != LastPosZ)
             {
-                LastPosX = PosX;
-                LastPosY = PosY;
-                LastPosZ = PosZ;
-                ObjToBuild.transform.position = new Vector3(PosX, PosY + .5f, PosZ);
+                LastPosX = posX;
+                LastPosY = posY;
+                LastPosZ = posZ;
+                ObjToBuild.transform.position = new Vector3(posX, posY + .5f, posZ);
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -67,7 +63,8 @@ public class RaycastBuildingSystem : MonoBehaviour
                 Debug.Log("Object created");
                 Instantiate(ObjToBuild, 
                     ObjToBuild.transform.position,
-                    Quaternion.identity);
+                    ObjToBuild.transform.rotation, 
+                    BuildedLevel.transform);
             }
         }
     }

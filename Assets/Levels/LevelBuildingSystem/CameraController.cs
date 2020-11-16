@@ -3,8 +3,8 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour
 {
-    public Vector2 Limit;
-    public float MinZoom, MaxZoom;
+   
+    public GameObject levelPlane;
 
     // Update is called once per frame
     void Update()
@@ -12,17 +12,22 @@ public class CameraController : MonoBehaviour
         Vector3 pos = transform.position;
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        pos.x += Input.GetAxis("Horizontal") * .3f;
+        
+        // pos.x += Input.GetAxis("Horizontal") * .3f;
         pos.y += -scroll * 5f;
-        pos.z += Input.GetAxis("Vertical") * .3f;
-
-        pos.y = Mathf.Clamp(pos.y, MinZoom, MaxZoom);
-
-        /*Camera.main.fieldOfView -= scroll*20;
-        Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView,MinZoom,MaxZoom);*/
-
-        pos.x = Mathf.Clamp(pos.x, -Limit.x, Limit.x);
-        pos.z = Mathf.Clamp(pos.z, -Limit.y, Limit.y);
-        transform.position = pos;
+        
+        Vector3 forward = Camera.main.transform.forward;
+        forward.y = 0;
+        forward.Normalize();
+        
+        transform.position = pos + Camera.main.transform.right * (Input.GetAxis("Horizontal") * .3f) + forward * (Input.GetAxis("Vertical") * .3f);
+        
+        // if (Input.GetKey(KeyCode.R))
+        // {
+        //     transform.RotateAround(levelPlane.transform.position, transform.up, Time.deltaTime * 90f);
+        //     
+        //     // transform.Rotate( new Vector3(0, 5, 0) * (Time.deltaTime * 90f), Space.World );
+        //     // transform.Rotate(transform.position, transform.up, Time.deltaTime * 90f, Space.World);
+        // }
     }
 }
