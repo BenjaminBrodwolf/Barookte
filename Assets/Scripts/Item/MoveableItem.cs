@@ -18,7 +18,7 @@ public class MoveableItem : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Trigger with Player !");
+            // Debug.Log("Trigger with Player !");
             playerTrigger = true;
         }
     }
