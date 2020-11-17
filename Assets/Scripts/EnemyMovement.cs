@@ -6,24 +6,20 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    //private Rigidbody _rigidbody;
-
     private List<Vertex> q;
 
     private List<Vertex> vertices = new List<Vertex>();
 
     private List<Vector2> takenEnemyPositions;
 
-    private void Start()
-    {
-        //_rigidbody = GetComponent<Rigidbody>();
-    }
-
     public Vector3 MoveEnemy(Vector3 playerPosition, List<Vector2> takenEnemyPositions)
     {
         this.takenEnemyPositions = takenEnemyPositions;
         var path = GetFastestPath(playerPosition);
-        var nextVertex = path.Last();
+        var nextVertex = path.LastOrDefault();
+        //path does not have any vertex, no path for enemy found
+        if (nextVertex == null) return transform.position;
+
         var new3DPosition = new Vector3(nextVertex.position.x, transform.position.y, nextVertex.position.y);
         transform.position = new3DPosition;
         return new3DPosition;
@@ -42,12 +38,14 @@ public class EnemyMovement : MonoBehaviour
         startVertex.distance = 0;
         vertices.Add(startVertex);
 
+        //Build up board recursively
         ExplorePosition(startVertex);
 
         q = new List<Vertex>(vertices);
 
         while (q.Any())
         {
+            //sort manually because C# does not have a priority queue implemented
             q.Sort();
             var v = q.First();
             q.Remove(v);
@@ -63,10 +61,16 @@ public class EnemyMovement : MonoBehaviour
             }
         }
 
+        //look at path found
         var playerPosition2D = new Vector2(((int) playerPosition.x) + 0.5f, ((int) playerPosition.z) + 0.5f);
 
         var path = new List<Vertex>();
-        var current = vertices.First(x => x.position == playerPosition2D);
+        var current = vertices.FirstOrDefault(x => x.position == playerPosition2D);
+        //no path found
+        if (current == null)
+        {
+            return path;
+        }
 
         while (!Equals(current, startVertex))
         {
@@ -180,8 +184,8 @@ public class EnemyMovement : MonoBehaviour
         var currentPosition3D = (new Vector3(currentPosition.x, 1, currentPosition.y));
         var lookDirection = (currentPosition3D - positionToWalk3D);
 
-        var beneath = Physics.Raycast(positionToWalk3D, raycastDirection);
-        //Debug.DrawRay(positionToWalk3D, raycastDirection, Color.black, 2);
+        var beneath = Physics.Raycast(positionToWalk3D, raycastDirection, 1f, LayerMask.GetMask(new[] {"Earth"}));
+        Debug.DrawRay(positionToWalk3D, raycastDirection, Color.black, 2);
         var inFront = !Physics.Raycast(positionToWalk3D, lookDirection, 0.5f,
             LayerMask.GetMask(new[] {"MoveableItem"}));
         if (!inFront)
