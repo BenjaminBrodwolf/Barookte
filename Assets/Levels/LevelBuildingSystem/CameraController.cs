@@ -21,13 +21,6 @@ public class CameraController : MonoBehaviour
         forward.Normalize();
         
         transform.position = pos + Camera.main.transform.right * (Input.GetAxis("Horizontal") * .3f) + forward * (Input.GetAxis("Vertical") * .3f);
-        
-        // if (Input.GetKey(KeyCode.R))
-        // {
-        //     transform.RotateAround(levelPlane.transform.position, transform.up, Time.deltaTime * 90f);
-        //     
-        //     // transform.Rotate( new Vector3(0, 5, 0) * (Time.deltaTime * 90f), Space.World );
-        //     // transform.Rotate(transform.position, transform.up, Time.deltaTime * 90f, Space.World);
-        // }
+
     }
 }

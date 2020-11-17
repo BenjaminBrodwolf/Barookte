@@ -38,18 +38,20 @@ public class RaycastBuildingSystem : MonoBehaviour
         
         // Debug.DrawLine(transform.position, mousePos , Color.red);
 
-        if (EventSystem.current.IsPointerOverGameObject())
-        {
-            return;
-        }
+        // if (EventSystem.current.IsPointerOverGameObject())
+        // {
+        //     return;
+        // }
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
         {
             int posX = (int) Mathf.Round(hit.point.x);
-            int posY = (int) Mathf.Round(hit.point.y);
+            
+            int posY = Mathf.Clamp((int) Mathf.Round(hit.point.y), 0, 2);
+             
             int posZ = (int) Mathf.Round(hit.point.z);
 
-//			Debug.Log("X: " + PosX + " & Z: " + PosZ);
+			Debug.Log("X: " + posX + " & Y: " + posY + " & Z: " + posZ);
             if (posX != LastPosX || posY != LastPosY || posZ != LastPosZ)
             {
                 LastPosX = posX;
