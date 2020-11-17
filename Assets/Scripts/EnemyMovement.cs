@@ -6,17 +6,17 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    private Rigidbody _rigidbody;
-    
+    //private Rigidbody _rigidbody;
+
     private List<Vertex> q;
 
     private List<Vertex> vertices = new List<Vertex>();
 
     private List<Vector2> takenEnemyPositions;
-    
+
     private void Start()
     {
-        _rigidbody = GetComponent<Rigidbody>();
+        //_rigidbody = GetComponent<Rigidbody>();
     }
 
     public Vector3 MoveEnemy(Vector3 playerPosition, List<Vector2> takenEnemyPositions)
@@ -24,8 +24,8 @@ public class EnemyMovement : MonoBehaviour
         this.takenEnemyPositions = takenEnemyPositions;
         var path = GetFastestPath(playerPosition);
         var nextVertex = path.Last();
-        var new3DPosition = new Vector3(nextVertex.position.x, _rigidbody.position.y, nextVertex.position.y);
-        _rigidbody.MovePosition(new3DPosition);
+        var new3DPosition = new Vector3(nextVertex.position.x, transform.position.y, nextVertex.position.y);
+        transform.position = new3DPosition;
         return new3DPosition;
     }
 
@@ -35,7 +35,7 @@ public class EnemyMovement : MonoBehaviour
     {
         vertices = new List<Vertex>();
 
-        var positionOfEnemy = _rigidbody.transform.position;
+        var positionOfEnemy = transform.position;
         var enemyPosition2D = new Vector2(((int) positionOfEnemy.x) + 0.5f, ((int) positionOfEnemy.z) + 0.5f);
 
         var startVertex = new Vertex(enemyPosition2D);
@@ -45,13 +45,13 @@ public class EnemyMovement : MonoBehaviour
         ExplorePosition(startVertex);
 
         q = new List<Vertex>(vertices);
-        
+
         while (q.Any())
         {
             q.Sort();
             var v = q.First();
             q.Remove(v);
-            
+
             foreach (var neighbour in v.neighbours)
             {
                 int distance = v.distance + 1;
@@ -71,7 +71,8 @@ public class EnemyMovement : MonoBehaviour
         while (!Equals(current, startVertex))
         {
             var previous = current.previous;
-            Debug.DrawLine(new Vector3(current.position.x, 1, current.position.y), new Vector3(previous.position.x, 1, previous.position.y),
+            Debug.DrawLine(new Vector3(current.position.x, 1, current.position.y),
+                new Vector3(previous.position.x, 1, previous.position.y),
                 Color.blue, 2);
             path.Add(current);
             current = previous;
@@ -79,10 +80,9 @@ public class EnemyMovement : MonoBehaviour
 
         return path;
     }
-    
+
     private void ExplorePosition(Vertex currentVertex)
     {
-
         var vertex = vertices.First(x => x.Equals(currentVertex));
 
         var enemyPosition2DxPlus = currentVertex.position + new Vector2(1f, 0f);
@@ -174,7 +174,7 @@ public class EnemyMovement : MonoBehaviour
         {
             return false;
         }
-        
+
         var raycastDirection = new Vector3(0, -4, 0);
         var positionToWalk3D = new Vector3(positionToWalkTo.x, 1, positionToWalkTo.y);
         var currentPosition3D = (new Vector3(currentPosition.x, 1, currentPosition.y));
@@ -182,8 +182,13 @@ public class EnemyMovement : MonoBehaviour
 
         var beneath = Physics.Raycast(positionToWalk3D, raycastDirection);
         //Debug.DrawRay(positionToWalk3D, raycastDirection, Color.black, 2);
-        var inFront = !Physics.Raycast(positionToWalk3D, lookDirection, 0.3f);
-        Debug.DrawRay(positionToWalk3D, lookDirection, Color.cyan, 2);
+        var inFront = !Physics.Raycast(positionToWalk3D, lookDirection, 0.5f,
+            LayerMask.GetMask(new[] {"MoveableItem"}));
+        if (!inFront)
+        {
+            Debug.DrawRay(positionToWalk3D, lookDirection, Color.cyan, 2);
+        }
+
         return beneath && inFront;
     }
 }
