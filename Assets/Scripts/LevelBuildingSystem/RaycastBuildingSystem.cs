@@ -27,14 +27,14 @@ public class RaycastBuildingSystem : MonoBehaviour
         BuildedLevel = GameObject.FindGameObjectWithTag("GameLevel");
 
 
-        ObjToBuild = Instantiate(buildingdObjects[0].ObjToPlace, new Vector3(0, 0.5f, 0), Quaternion.identity);
+        ObjToBuild = Instantiate(buildingdObjects[0].ObjToPlace, new Vector3(0, 0, 0), Quaternion.identity);
 
-        foreach (var buildingdObject in buildingdObjects)
+        foreach (var buildingObject in buildingdObjects)
         {
-            buildingdObject.ButtonToPlace.onClick.AddListener(() =>
+            buildingObject.ButtonToPlace.onClick.AddListener(() =>
             {
                 Destroy(ObjToBuild);
-                ObjToBuild = (GameObject) PrefabUtility.InstantiatePrefab(buildingdObject.ObjToPlace);
+                ObjToBuild = (GameObject) PrefabUtility.InstantiatePrefab(buildingObject.ObjToPlace);
                 if (ObjToBuild.GetComponent<Rigidbody>() != null)
                 {
                     ObjToBuild.GetComponent<Rigidbody>().isKinematic = true;
@@ -50,7 +50,6 @@ public class RaycastBuildingSystem : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
         RaycastHit hit;
 
-        // Debug.DrawLine(transform.position, mousePos , Color.red);
 
         if (EventSystem.current.IsPointerOverGameObject()) // wenn Maus über einem UI element ist
         {
@@ -84,22 +83,16 @@ public class RaycastBuildingSystem : MonoBehaviour
                 ObjToBuild.transform.Rotate(0, 90, 0);
             }
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0)) // left mouse click
             {
                 RemoveSamePositionElement();
-
-
-                // if (ObjToBuild.GetComponent<Rigidbody>() != null)
-                // {
-                //     ObjToBuild.GetComponent<Rigidbody>().isKinematic = isCurrentObjectKinematic;
-                // }
                 
                 Instantiate(ObjToBuild,
                     ObjToBuild.transform.position,
                     ObjToBuild.transform.rotation,
                     BuildedLevel.transform);
             }
-            else if (Input.GetMouseButtonDown(1))
+            else if (Input.GetMouseButtonDown(1)) // right mouse click
             {
                 RemoveSamePositionElement();
             }

@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool CanMove(Vector3 currentPosition, Directions md)
     {
-        var raycastDirection = new Vector3(0, -2, 0);
+        var raycastDirection = new Vector3(0, -1, 0);
 
         switch (md)
         {
@@ -35,7 +35,9 @@ public class PlayerMovement : MonoBehaviour
                 ReactToMoveableItem(currentPosition, wannaMoveDirection);
 
 
-                return Physics.Raycast(currentPosition + new Vector3(0, 1, 1), raycastDirection)
+                Debug.DrawRay(currentPosition + wannaMoveDirection, raycastDirection, Color.red, 20);
+                
+                return Physics.Raycast(currentPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
                        && !Physics.Raycast(currentPosition, new Vector3(0, 0, 1), 1f);
             }
             case Directions.Down:
@@ -44,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
                 ReactToMoveableItem(currentPosition, wannaMoveDirection);
 
 
-                return Physics.Raycast(currentPosition + new Vector3(0, 1, -1), raycastDirection)
+                return Physics.Raycast(currentPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
                        && !Physics.Raycast(currentPosition, new Vector3(0, 0, -1), 1f);
             }
             case Directions.Left:
@@ -53,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
                 ReactToMoveableItem(currentPosition, wannaMoveDirection);
 
 
-                return Physics.Raycast(currentPosition + new Vector3(-1, 1, 0), raycastDirection)
+                return Physics.Raycast(currentPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
                        && !Physics.Raycast(currentPosition, new Vector3(-1, 0, 0), 1f);
             }
             case Directions.Rigth:
@@ -61,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
                 var wannaMoveDirection = new Vector3(1, 0, 0);
                 ReactToMoveableItem(currentPosition, wannaMoveDirection);
 
-                return Physics.Raycast(currentPosition + new Vector3(1, 1, 0), raycastDirection)
+                return Physics.Raycast(currentPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
                        && !Physics.Raycast(currentPosition, new Vector3(1, 0, 0), 1f);
             }
         }
@@ -104,7 +106,6 @@ public class PlayerMovement : MonoBehaviour
 
             if (moveableItemScript.IsPlayerInTriggerToItem())
             {
-                // player push that Item forward the player pressed button
                 moveableItemScript.PushItemInDirection(newDirection);
             }
         }
