@@ -4,6 +4,7 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class RaycastBuildingSystem : MonoBehaviour
 {
@@ -81,43 +82,32 @@ public class RaycastBuildingSystem : MonoBehaviour
 
             if ( Input.GetMouseButtonDown(0))
             {
-                // Debug.Log("Object created");
-                // private LayerMask earth = LayerMask.GetMask("Earth");
-
-                // if (Physics.Raycast(ray, out hit, Mathf.Infinity,
-                //     LayerMask.GetMask("Earth", "OnEarth", "MoveableItem")))
-                // {
-                //     Debug.Log( hit.collider.gameObject.name);
-                //
-                // }
-                //     
-                // Debug.Log( "Log earth: " );
-                // Debug.Log( "Log MoveableItem: " );
-                    
-                // RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity,LayerMask.GetMask("Earth", "OnEarth", "MoveableItem"));
-                //
-                // foreach (var hitElement in hits)
-                // {
-                //     Debug.Log(hits.Length.ToString());
-                //     Debug.Log(hitElement.collider.transform.position.ToString());
-                //     Debug.Log(hitElement.collider.name + " id: "  + hitElement.collider.GetInstanceID().ToString());
-                // }
-
-                var buildedElements = buildedLevel.transform.GetComponentsInChildren<Transform>();
-                foreach (var element in buildedElements)
-                {
-                    if (element.position == ObjToBuild.transform.position)
-                    {
-                        Destroy(element.gameObject);
-                    }
-                }
+                RemoveSamePositionElement();
                 
                 Instantiate(ObjToBuild, 
                     ObjToBuild.transform.position,
                     ObjToBuild.transform.rotation, 
                     BuildedLevel.transform);
             }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                RemoveSamePositionElement();
+            }
+   
         }
     }
+    private void RemoveSamePositionElement()
+    {
+        var buildedElements = buildedLevel.transform.GetComponentsInChildren<Transform>();
+        foreach (var element in buildedElements)
+        {
+            if (element.position == ObjToBuild.transform.position)
+            {
+                Destroy(element.gameObject);
+            }
+        }
+    }
+
     
 }
+
