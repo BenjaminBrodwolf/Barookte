@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Log
   - Rock
+  - GameLevel
   layers:
   - Default
   - TransparentFX

@@ -7,24 +7,25 @@ using UnityEngine.EventSystems;
 public class GameManager : MonoBehaviour
 {
     // private BoardBuilder boardManager;
-    private LevelGenerator levelGenerator;
-    
+    // private LevelGenerator levelGenerator;
+    private GameObject gameLevel;
     private GameObject player;
     private PlayerMovement playerMovement;
 
     private GameObject[] enemies;
 
-    // Start is called before the first frame update
     void Start()
     {
-        levelGenerator = GetComponentInChildren<LevelGenerator>();
-        levelGenerator.GenerateLevel();
+        // levelGenerator = GetComponentInChildren<LevelGenerator>();
+        // levelGenerator.GenerateLevel();
+        gameLevel = GameObject.FindGameObjectWithTag("GameLevel");
 
+        
+        
+        
         player = GameObject.FindGameObjectWithTag("Player");
         playerMovement = player.GetComponent<PlayerMovement>();
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        
-        
     }
 
     // Update is called once per frame
@@ -82,8 +83,8 @@ public class GameManager : MonoBehaviour
                 hasPlayerMoved = true;
             }
         }
-       
-        
+
+
         if (hasPlayerMoved)
         {
             foreach (var enemy in enemies)
@@ -91,7 +92,6 @@ public class GameManager : MonoBehaviour
                 var enemyMovement = enemy.GetComponent<EnemyMovement>();
                 var moved = enemyMovement.MoveEnemy(newPlayerPosition);
             }
-            
         }
     }
 }

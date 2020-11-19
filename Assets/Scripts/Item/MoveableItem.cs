@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MoveableItem : MonoBehaviour
 {
@@ -8,10 +11,30 @@ public class MoveableItem : MonoBehaviour
     private bool playerTrigger;
     
     public bool IsPlayerInTriggerToItem() => playerTrigger;
+    
+    
 
+    
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
+        Debug.Log("Awake movebaleitem");
+        Debug.Log(rigidbody);
+    }
+
+
+    private void Start()
+    {
+        Scene currentScene = SceneManager.GetActiveScene ();
+        
+        if (currentScene.name != "LevelBuilder")
+        {
+            // var myPrefab = (GameObject) PrefabUtility.InstantiatePrefab(gameObject);
+            // Debug.Log(myPrefab.name);
+            // Debug.Log(myPrefab.GetComponent<Rigidbody>().isKinematic);
+
+            rigidbody.isKinematic = false;  //myPrefab.GetComponent<Rigidbody>().isKinematic;
+        }
     }
 
     private void OnTriggerEnter(Collider other)

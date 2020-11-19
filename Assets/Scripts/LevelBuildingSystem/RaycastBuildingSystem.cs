@@ -8,26 +8,25 @@ using UnityEngine.UI;
 
 public class RaycastBuildingSystem : MonoBehaviour
 {
-    public GameObject BuildedLevel;
+    private GameObject BuildedLevel;
     private GameObject ObjToBuild;
     public BuildingObject[] buildingdObjects;
 
     public LayerMask mask;
     int LastPosX, LastPosY, LastPosZ;
     Vector3 mousePos;
-    
+
     // Layer Mask
     // private int Earth = 8;
     private int OnEarth = 9;
     private int MoveAbleItem = 10;
 
-    private GameObject buildedLevel;
-    
+
     void Start()
     {
-        buildedLevel = GameObject.Find("BuildedLevel");
-    
-        
+        BuildedLevel = GameObject.FindGameObjectWithTag("GameLevel");
+
+
         ObjToBuild = Instantiate(buildingdObjects[0].ObjToPlace, new Vector3(0, 0.5f, 0), Quaternion.identity);
 
         foreach (var buildingdObject in buildingdObjects)
@@ -35,7 +34,12 @@ public class RaycastBuildingSystem : MonoBehaviour
             buildingdObject.ButtonToPlace.onClick.AddListener(() =>
             {
                 Destroy(ObjToBuild);
-                ObjToBuild = (GameObject) PrefabUtility.InstantiatePrefab(buildingdObject.ObjToPlace); 
+                ObjToBuild = (GameObject) PrefabUtility.InstantiatePrefab(buildingdObject.ObjToPlace);
+                if (ObjToBuild.GetComponent<Rigidbody>() != null)
+                {
+                    ObjToBuild.GetComponent<Rigidbody>().isKinematic = true;
+                    // ObjToBuild.GetComponent<Rigidbody>().detectCollisions = false;
+                }
             });
         }
     }
@@ -45,7 +49,7 @@ public class RaycastBuildingSystem : MonoBehaviour
         mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
         RaycastHit hit;
-        
+
         // Debug.DrawLine(transform.position, mousePos , Color.red);
 
         if (EventSystem.current.IsPointerOverGameObject()) // wenn Maus über einem UI element ist
@@ -57,16 +61,16 @@ public class RaycastBuildingSystem : MonoBehaviour
         {
             int posX = (int) Mathf.Round(hit.point.x);
 
-            int posY = 0;  //Mathf.Clamp((int) Mathf.Round(hit.point.y), 0, 2);
+            int posY = 0; //Mathf.Clamp((int) Mathf.Round(hit.point.y), 0, 2);
 
             if (ObjToBuild.layer == MoveAbleItem || ObjToBuild.layer == OnEarth)
             {
-                posY = 1; 
+                posY = 1;
             }
-            
+
             int posZ = (int) Mathf.Round(hit.point.z);
 
-			// Debug.Log("X: " + posX + " & Y: " + posY + " & Z: " + posZ);
+            // Debug.Log("X: " + posX + " & Y: " + posY + " & Z: " + posZ);
             if (posX != LastPosX || posY != LastPosY || posZ != LastPosZ)
             {
                 LastPosX = posX;
@@ -74,31 +78,37 @@ public class RaycastBuildingSystem : MonoBehaviour
                 LastPosZ = posZ;
                 ObjToBuild.transform.position = new Vector3(posX, posY + .5f, posZ);
             }
-            
+
             if (Input.GetKeyDown(KeyCode.R))
             {
-                ObjToBuild.transform.Rotate(0,90,0);
-            } 
+                ObjToBuild.transform.Rotate(0, 90, 0);
+            }
 
-            if ( Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 RemoveSamePositionElement();
+
+
+                // if (ObjToBuild.GetComponent<Rigidbody>() != null)
+                // {
+                //     ObjToBuild.GetComponent<Rigidbody>().isKinematic = isCurrentObjectKinematic;
+                // }
                 
-                Instantiate(ObjToBuild, 
+                Instantiate(ObjToBuild,
                     ObjToBuild.transform.position,
-                    ObjToBuild.transform.rotation, 
+                    ObjToBuild.transform.rotation,
                     BuildedLevel.transform);
             }
             else if (Input.GetMouseButtonDown(1))
             {
                 RemoveSamePositionElement();
             }
-   
         }
     }
+
     private void RemoveSamePositionElement()
     {
-        var buildedElements = buildedLevel.transform.GetComponentsInChildren<Transform>();
+        var buildedElements = BuildedLevel.transform.GetComponentsInChildren<Transform>();
         foreach (var element in buildedElements)
         {
             if (element.position == ObjToBuild.transform.position)
@@ -107,7 +117,4 @@ public class RaycastBuildingSystem : MonoBehaviour
             }
         }
     }
-
-    
 }
-
