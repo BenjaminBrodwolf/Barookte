@@ -7,7 +7,7 @@ public class RotateYaxis : MonoBehaviour
     public GameObject plane;
     void Update()
     {
-        if (Input.GetKey(KeyCode.R))
+        if (Input.GetKey(KeyCode.E))
         {
             transform.RotateAround(plane.transform.position, -transform.up, Time.deltaTime * 90f);
         }
