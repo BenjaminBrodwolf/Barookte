@@ -32,7 +32,7 @@ public class EnemyMovement : MonoBehaviour
         vertices = new List<Vertex>();
 
         var positionOfEnemy = transform.position;
-        var enemyPosition2D = new Vector2(((int) positionOfEnemy.x) + 0.5f, ((int) positionOfEnemy.z) + 0.5f);
+        var enemyPosition2D = new Vector2(((int) positionOfEnemy.x), ((int) positionOfEnemy.z));
 
         var startVertex = new Vertex(enemyPosition2D);
         startVertex.distance = 0;
@@ -62,7 +62,7 @@ public class EnemyMovement : MonoBehaviour
         }
 
         //look at path found
-        var playerPosition2D = new Vector2(((int) playerPosition.x) + 0.5f, ((int) playerPosition.z) + 0.5f);
+        var playerPosition2D = new Vector2(((int) playerPosition.x), ((int) playerPosition.z));
 
         var path = new List<Vertex>();
         var current = vertices.FirstOrDefault(x => x.position == playerPosition2D);
@@ -180,8 +180,8 @@ public class EnemyMovement : MonoBehaviour
         }
 
         var raycastDirection = new Vector3(0, -4, 0);
-        var positionToWalk3D = new Vector3(positionToWalkTo.x, 1, positionToWalkTo.y);
-        var currentPosition3D = (new Vector3(currentPosition.x, 1, currentPosition.y));
+        var positionToWalk3D = new Vector3(positionToWalkTo.x, 2, positionToWalkTo.y);
+        var currentPosition3D = (new Vector3(currentPosition.x, 2, currentPosition.y));
         var lookDirection = (currentPosition3D - positionToWalk3D);
 
         var beneath = Physics.Raycast(positionToWalk3D, raycastDirection, 1f, LayerMask.GetMask(new[] {"Earth"}));
