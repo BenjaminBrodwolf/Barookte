@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
                 Debug.DrawRay(currentPosition + wannaMoveDirection, raycastDirection, Color.red, 20);
                 
                 return Physics.Raycast(currentPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
-                       && !Physics.Raycast(currentPosition, new Vector3(0, 0, 1), 1f);
+                       && !Physics.Raycast(currentPosition, new Vector3(0, 0, 1), 1f, LayerMask.GetMask("MovebleItem", "Enemy"));
             }
             case Directions.Down:
             {
@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
 
 
                 return Physics.Raycast(currentPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
-                       && !Physics.Raycast(currentPosition, new Vector3(0, 0, -1), 1f);
+                       && !Physics.Raycast(currentPosition, new Vector3(0, 0, -1), 1f, LayerMask.GetMask("MovebleItem", "Enemy"));
             }
             case Directions.Left:
             {
@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
 
 
                 return Physics.Raycast(currentPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
-                       && !Physics.Raycast(currentPosition, new Vector3(-1, 0, 0), 1f);
+                       && !Physics.Raycast(currentPosition, new Vector3(-1, 0, 0), 1f, LayerMask.GetMask("MovebleItem", "Enemy"));
             }
             case Directions.Rigth:
             {
@@ -64,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
                 ReactToMoveableItem(currentPosition, wannaMoveDirection);
 
                 return Physics.Raycast(currentPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
-                       && !Physics.Raycast(currentPosition, new Vector3(1, 0, 0), 1f);
+                       && !Physics.Raycast(currentPosition, new Vector3(1, 0, 0), 1f, LayerMask.GetMask("MovebleItem", "Enemy")); 
             }
         }
 

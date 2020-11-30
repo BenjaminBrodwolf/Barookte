@@ -16,8 +16,6 @@ public class MoveableItem : MonoBehaviour
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
-        Debug.Log("Awake movebaleitem");
-        Debug.Log(rigidbody);
     }
 
 
