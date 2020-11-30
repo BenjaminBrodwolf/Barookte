@@ -87,10 +87,13 @@ public class GameManager : MonoBehaviour
 
         if (hasPlayerMoved)
         {
+            var newEnemyPositions = new List<Vector2>();
             foreach (var enemy in enemies)
             {
                 var enemyMovement = enemy.GetComponent<EnemyMovement>();
-                var moved = enemyMovement.MoveEnemy(newPlayerPosition);
+                var moved = enemyMovement.MoveEnemy(newPlayerPosition, newEnemyPositions);
+                newEnemyPositions.Add(new Vector2(moved.x, moved.z));
+                Debug.Log($"{enemy} moved");
             }
         }
     }
