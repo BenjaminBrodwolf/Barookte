@@ -13,8 +13,6 @@ public class MoveableItem : MonoBehaviour
     public bool IsPlayerInTriggerToItem() => playerTrigger;
     
     
-
-    
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();

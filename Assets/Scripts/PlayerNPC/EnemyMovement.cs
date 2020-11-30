@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -12,6 +13,15 @@ public class EnemyMovement : MonoBehaviour
 
     private List<Vector2> takenEnemyPositions;
 
+    private void Start()
+    {
+        Scene currentScene = SceneManager.GetActiveScene ();
+        if (currentScene.name != "LevelBuilder")
+        {
+            GetComponent<Rigidbody>().isKinematic = false;  
+        }
+    }
+    
     public Vector3 MoveEnemy(Vector3 playerPosition, List<Vector2> takenEnemyPositions)
     {
         this.takenEnemyPositions = takenEnemyPositions;
