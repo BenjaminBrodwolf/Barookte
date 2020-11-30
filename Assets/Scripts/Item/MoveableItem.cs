@@ -29,10 +29,6 @@ public class MoveableItem : MonoBehaviour
         
         if (currentScene.name != "LevelBuilder")
         {
-            // var myPrefab = (GameObject) PrefabUtility.InstantiatePrefab(gameObject);
-            // Debug.Log(myPrefab.name);
-            // Debug.Log(myPrefab.GetComponent<Rigidbody>().isKinematic);
-
             rigidbody.isKinematic = false;  //myPrefab.GetComponent<Rigidbody>().isKinematic;
         }
     }

@@ -6,8 +6,6 @@ using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
-    // private BoardBuilder boardManager;
-    // private LevelGenerator levelGenerator;
     private GameObject gameLevel;
     private GameObject player;
     private PlayerMovement playerMovement;
@@ -16,13 +14,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // levelGenerator = GetComponentInChildren<LevelGenerator>();
-        // levelGenerator.GenerateLevel();
         gameLevel = GameObject.FindGameObjectWithTag("GameLevel");
-
-        
-        
-        
         player = GameObject.FindGameObjectWithTag("Player");
         playerMovement = player.GetComponent<PlayerMovement>();
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
