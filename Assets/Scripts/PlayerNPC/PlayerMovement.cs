@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody _rigidbody;
-    
+    public int speed = 10;
+
+    public Vector3 Position { get; private set; }
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        Position = transform.position;
     }
 
     public enum Directions
@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    public bool CanMove(Vector3 currentPosition, Directions md)
+    public bool CanMove(Directions md)
     {
         var raycastDirection = new Vector3(0, -1, 0);
 
@@ -32,46 +32,46 @@ public class PlayerMovement : MonoBehaviour
             case Directions.Up:
             {
                 var wannaMoveDirection = new Vector3(0, 0, 1);
-                ReactToMoveableItem(currentPosition, wannaMoveDirection);
+                ReactToMoveableItem(Position, wannaMoveDirection);
 
 
-                Debug.DrawRay(currentPosition + wannaMoveDirection, raycastDirection, Color.red, 20);
+                Debug.DrawRay(Position + wannaMoveDirection, raycastDirection, Color.red, 20);
                 
-                return Physics.Raycast(currentPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
-                       && !Physics.Raycast(currentPosition, new Vector3(0, 0, 1), 1f, LayerMask.GetMask("MovebleItem", "Enemy"));
+                return Physics.Raycast(Position + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
+                       && !Physics.Raycast(Position, new Vector3(0, 0, 1), 1f, LayerMask.GetMask("MovebleItem", "Enemy"));
             }
             case Directions.Down:
             {
                 var wannaMoveDirection = new Vector3(0, 0, -1);
-                ReactToMoveableItem(currentPosition, wannaMoveDirection);
+                ReactToMoveableItem(Position, wannaMoveDirection);
 
 
-                return Physics.Raycast(currentPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
-                       && !Physics.Raycast(currentPosition, new Vector3(0, 0, -1), 1f, LayerMask.GetMask("MovebleItem", "Enemy"));
+                return Physics.Raycast(Position + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
+                       && !Physics.Raycast(Position, new Vector3(0, 0, -1), 1f, LayerMask.GetMask("MovebleItem", "Enemy"));
             }
             case Directions.Left:
             {
                 var wannaMoveDirection = new Vector3(-1, 0, 0);
-                ReactToMoveableItem(currentPosition, wannaMoveDirection);
+                ReactToMoveableItem(Position, wannaMoveDirection);
 
 
-                return Physics.Raycast(currentPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
-                       && !Physics.Raycast(currentPosition, new Vector3(-1, 0, 0), 1f, LayerMask.GetMask("MovebleItem", "Enemy"));
+                return Physics.Raycast(Position + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
+                       && !Physics.Raycast(Position, new Vector3(-1, 0, 0), 1f, LayerMask.GetMask("MovebleItem", "Enemy"));
             }
             case Directions.Rigth:
             {
                 var wannaMoveDirection = new Vector3(1, 0, 0);
-                ReactToMoveableItem(currentPosition, wannaMoveDirection);
+                ReactToMoveableItem(Position, wannaMoveDirection);
 
-                return Physics.Raycast(currentPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
-                       && !Physics.Raycast(currentPosition, new Vector3(1, 0, 0), 1f, LayerMask.GetMask("MovebleItem", "Enemy")); 
+                return Physics.Raycast(Position + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
+                       && !Physics.Raycast(Position, new Vector3(1, 0, 0), 1f, LayerMask.GetMask("MovebleItem", "Enemy")); 
             }
         }
 
         return false;
     }
 
-    public Vector3 MovePlayer(Directions direction)
+    public Vector3 UpdatePosition(Directions direction)
     {
         var newPosition = _rigidbody.position;
         switch (direction)
@@ -91,9 +91,18 @@ public class PlayerMovement : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
         }
-
-        _rigidbody.MovePosition(newPosition);
+        
+        Position = newPosition;
         return newPosition;
+    }
+
+    public bool UpdatePositionPerFrame(double animationAccuracy = 0.005)
+    {
+        var moveDirection = Position - _rigidbody.position;
+        var deltaMovement = moveDirection * (speed * Time.deltaTime);
+        _rigidbody.MovePosition(_rigidbody.position + deltaMovement);
+        
+        return (_rigidbody.transform.position - Position).magnitude < animationAccuracy;
     }
 
     public void ReactToMoveableItem(Vector3 currentPosition, Vector3 newDirection)

@@ -1,48 +1,66 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class EnemyMovement : MonoBehaviour
 {
+    public float speed = 10;
+    
     private List<Vertex> q;
 
     private List<Vertex> vertices = new List<Vertex>();
 
     private List<Vector2> takenEnemyPositions;
+    private Rigidbody _rigidbody;
+
+    private Vector3 position;
 
     private void Start()
     {
+        _rigidbody = GetComponent<Rigidbody>();
         Scene currentScene = SceneManager.GetActiveScene ();
         if (currentScene.name != "LevelBuilder")
         {
-            GetComponent<Rigidbody>().isKinematic = false;  
+            _rigidbody.isKinematic = false;  
         }
+
+        position = _rigidbody.position;
     }
     
-    public Vector3 MoveEnemy(Vector3 playerPosition, List<Vector2> takenEnemyPositions)
+    public Vector3 UpdateEnemyPosition(Vector3 playerPosition, List<Vector2> takenEnemyPositions)
     {
         this.takenEnemyPositions = takenEnemyPositions;
         var path = GetFastestPath(playerPosition);
         var nextVertex = path.LastOrDefault();
         //path does not have any vertex, no path for enemy found
-        if (nextVertex == null) return transform.position;
-
+        if (nextVertex == null)
+        {
+            return position;
+        }
+        
         var new3DPosition = new Vector3(nextVertex.position.x, transform.position.y, nextVertex.position.y);
-        transform.position = new3DPosition;
+        position = new3DPosition;
         return new3DPosition;
     }
 
-
+    public bool UpdatePositionPerFrame(double animationAccuracy = 0.05)
+    {
+        
+        var moveDirection = position - _rigidbody.position;
+        var deltaMovement = moveDirection * (speed * Time.deltaTime);
+        _rigidbody.MovePosition(_rigidbody.position + deltaMovement);
+      
+        return (_rigidbody.transform.position - position).magnitude < animationAccuracy;
+    }
+    
     //Djikstra
     public List<Vertex> GetFastestPath(Vector3 playerPosition)
     {
         vertices = new List<Vertex>();
 
-        var positionOfEnemy = transform.position;
-        var enemyPosition2D = new Vector2(((int) positionOfEnemy.x), ((int) positionOfEnemy.z));
+        
+        var enemyPosition2D = new Vector2(((int) position.x), ((int) position.z));
 
         var startVertex = new Vertex(enemyPosition2D);
         startVertex.distance = 0;
@@ -197,7 +215,7 @@ public class EnemyMovement : MonoBehaviour
         var beneath = Physics.Raycast(positionToWalk3D, raycastDirection, 1f, LayerMask.GetMask(new[] {"Earth"}));
         Debug.DrawRay(positionToWalk3D, raycastDirection, Color.black, 2);
         var inFront = !Physics.Raycast(positionToWalk3D, lookDirection, 0.5f,
-            LayerMask.GetMask(new[] {"MoveableItem"}));
+            LayerMask.GetMask(new[] {"Rock", "Log"}));
         if (!inFront)
         {
             Debug.DrawRay(positionToWalk3D, lookDirection, Color.cyan, 2);

@@ -10,8 +10,11 @@ public class GameManager : MonoBehaviour
     private GameObject player;
     private PlayerMovement playerMovement;
     public Camera playerCamera;
+    public double animationAccuracy = 0.05;
 
-    private GameObject[] enemies;
+    private Dictionary<GameObject, EnemyMovement> enemies;
+
+    private bool isAnimating = false;
 
     void Start()
     {
@@ -19,8 +22,14 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerCamera.transform.SetParent(player.transform);
         playerMovement = player.GetComponent<PlayerMovement>();
-        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        this.enemies = new Dictionary<GameObject, EnemyMovement>();
+        foreach (var enemy in enemies)
+        {
+            this.enemies.Add(enemy, enemy.GetComponent<EnemyMovement>());   
+        }
     }
+    
 
     // Update is called once per frame
     void Update()
@@ -32,15 +41,15 @@ public class GameManager : MonoBehaviour
 
         var hasPlayerMoved = false;
         var canPlayerMove = false;
-        var newPlayerPosition = Vector3.zero;
+
 
         if (up)
         {
             Debug.Log("up");
-            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.Directions.Up);
+            canPlayerMove = playerMovement.CanMove(PlayerMovement.Directions.Up);
             if (canPlayerMove)
             {
-                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.Directions.Up);
+               playerMovement.UpdatePosition(PlayerMovement.Directions.Up);
                 hasPlayerMoved = true;
             }
         }
@@ -48,10 +57,10 @@ public class GameManager : MonoBehaviour
         if (down)
         {
             // Debug.Log("down");
-            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.Directions.Down);
+            canPlayerMove = playerMovement.CanMove(PlayerMovement.Directions.Down);
             if (canPlayerMove)
             {
-                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.Directions.Down);
+                playerMovement.UpdatePosition(PlayerMovement.Directions.Down);
                 hasPlayerMoved = true;
             }
         }
@@ -59,10 +68,10 @@ public class GameManager : MonoBehaviour
         if (left)
         {
             // Debug.Log("left");
-            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.Directions.Left);
+            canPlayerMove = playerMovement.CanMove(PlayerMovement.Directions.Left);
             if (canPlayerMove)
             {
-                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.Directions.Left);
+                playerMovement.UpdatePosition(PlayerMovement.Directions.Left);
                 hasPlayerMoved = true;
             }
         }
@@ -70,10 +79,10 @@ public class GameManager : MonoBehaviour
         if (right)
         {
             // Debug.Log("right");
-            canPlayerMove = playerMovement.CanMove(player.transform.position, PlayerMovement.Directions.Rigth);
+            canPlayerMove = playerMovement.CanMove(PlayerMovement.Directions.Rigth);
             if (canPlayerMove)
             {
-                newPlayerPosition = playerMovement.MovePlayer(PlayerMovement.Directions.Rigth);
+                playerMovement.UpdatePosition(PlayerMovement.Directions.Rigth);
                 hasPlayerMoved = true;
             }
         }
@@ -81,13 +90,31 @@ public class GameManager : MonoBehaviour
 
         if (hasPlayerMoved)
         {
-            var newEnemyPositions = new List<Vector2>();
+            Debug.Log($"enemy need to be moved");
+            var enemyPo = new List<Vector2>();
             foreach (var enemy in enemies)
             {
-                var enemyMovement = enemy.GetComponent<EnemyMovement>();
-                var moved = enemyMovement.MoveEnemy(newPlayerPosition, newEnemyPositions);
-                newEnemyPositions.Add(new Vector2(moved.x, moved.z));
+                var newEnemyPosition = enemy.Value.UpdateEnemyPosition(playerMovement.Position, enemyPo);
+                enemyPo.Add(new Vector2(newEnemyPosition.x, newEnemyPosition.z));
                 Debug.Log($"{enemy} moved");
+            }
+
+            isAnimating = true;
+        }
+
+        if (isAnimating)
+        {
+            var hasReached = playerMovement.UpdatePositionPerFrame(animationAccuracy);
+
+            var hasDone = false;
+            foreach (var enemy in enemies)
+            {
+                hasDone = enemy.Value.UpdatePositionPerFrame();
+            }
+
+            if (hasReached && hasDone)
+            {
+                isAnimating = false;
             }
         }
     }
