@@ -9,6 +9,12 @@ public class MoveableItem : MonoBehaviour
 {
     private new Rigidbody rigidbody;
     private bool playerTrigger;
+    private Vector3 turnPosition;
+    
+    //For Animation
+    private bool isAnimating = false;
+    public float speed = 10f;
+    
     
     public bool IsPlayerInTriggerToItem() => playerTrigger;
     
@@ -17,8 +23,7 @@ public class MoveableItem : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody>();
     }
-
-
+    
     private void Start()
     {
         Scene currentScene = SceneManager.GetActiveScene ();
@@ -26,6 +31,22 @@ public class MoveableItem : MonoBehaviour
         if (currentScene.name != "LevelBuilder")
         {
             rigidbody.isKinematic = false;  //myPrefab.GetComponent<Rigidbody>().isKinematic;
+        }
+
+        turnPosition = rigidbody.position;
+    }
+    
+    private void Update()
+    {
+        if (isAnimating)
+        {
+            isAnimating = !UpdatePositionEveryFrame();
+            
+            //stop animating if they fall of the map
+            if (rigidbody.position.y < 1)
+            {
+                isAnimating = false;
+            }
         }
     }
 
@@ -48,9 +69,22 @@ public class MoveableItem : MonoBehaviour
     
     public void PushItemInDirection(Vector3 newDirection)
     {
-        if (!Physics.Raycast(transform.position, newDirection, 1f))
+        if (!Physics.Raycast(turnPosition, newDirection, 1f))
         {
-            rigidbody.MovePosition(transform.position + newDirection);
+            turnPosition = turnPosition + newDirection;
+            isAnimating = true;
         }
     }
+
+    private bool UpdatePositionEveryFrame(double animationAccuracy = 0.05)
+    {
+        var rigidbodyPosition = rigidbody.position;
+        var moveDirection = turnPosition - rigidbodyPosition;
+        var deltaMovement = moveDirection * (speed * Time.deltaTime);
+        rigidbody.MovePosition(rigidbodyPosition + deltaMovement);
+        
+        return (rigidbody.transform.position - turnPosition).magnitude < animationAccuracy;
+    }
+
+   
 }

@@ -23,8 +23,8 @@ TagManager:
   - OnEarth
   - MoveableItem
   - PickupItem
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 

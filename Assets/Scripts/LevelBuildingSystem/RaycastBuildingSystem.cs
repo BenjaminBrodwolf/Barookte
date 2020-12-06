@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.Linq;
 using UnityEditor;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -18,8 +19,13 @@ public class RaycastBuildingSystem : MonoBehaviour
 
     // Layer Mask
     // private int Earth = 8;
-    private int OnEarth = 9;
-    private int MoveAbleItem = 10;
+    private static readonly int[] LayerMask = new[]
+    {
+        9, //OnEarth
+        10, //MovableItem
+        12, //Player
+        13 //Enemy
+    };
 
 
     void Start()
@@ -62,7 +68,7 @@ public class RaycastBuildingSystem : MonoBehaviour
 
             int posY = 0; //Mathf.Clamp((int) Mathf.Round(hit.point.y), 0, 2);
 
-            if (ObjToBuild.layer == MoveAbleItem || ObjToBuild.layer == OnEarth)
+            if (LayerMask.Contains(ObjToBuild.layer))
             {
                 posY = 1;
             }

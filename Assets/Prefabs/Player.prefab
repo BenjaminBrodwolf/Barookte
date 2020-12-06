@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2614746656826057765}
   - component: {fileID: 1674235755381336010}
   - component: {fileID: 7094371058865828932}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Sphere (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 4499082822731160396}
   - component: {fileID: -4014310636552881428}
   - component: {fileID: -7114588675254286722}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -205,6 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44ab7617540784ec0865cce85f2b2d74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 10
 --- !u!1 &7095305643646472033
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,7 +217,7 @@ GameObject:
   - component: {fileID: 7325791320550262085}
   - component: {fileID: 3321269664472363981}
   - component: {fileID: 880627165214098066}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Sphere (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +296,7 @@ GameObject:
   - component: {fileID: 3991799820929064011}
   - component: {fileID: 8162705975368873469}
   - component: {fileID: 3019840290267669068}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

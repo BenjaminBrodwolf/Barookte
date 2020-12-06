@@ -208,19 +208,20 @@ public class EnemyMovement : MonoBehaviour
         }
 
         var raycastDirection = new Vector3(0, -4, 0);
-        var positionToWalk3D = new Vector3(positionToWalkTo.x, 2, positionToWalkTo.y);
-        var currentPosition3D = (new Vector3(currentPosition.x, 2, currentPosition.y));
+        var positionToWalk3D = new Vector3(positionToWalkTo.x, 1.5f, positionToWalkTo.y);
+        var currentPosition3D = (new Vector3(currentPosition.x, 1.5f, currentPosition.y));
         var lookDirection = (currentPosition3D - positionToWalk3D);
 
         var beneath = Physics.Raycast(positionToWalk3D, raycastDirection, 1f, LayerMask.GetMask(new[] {"Earth"}));
         Debug.DrawRay(positionToWalk3D, raycastDirection, Color.black, 2);
-        var inFront = !Physics.Raycast(positionToWalk3D, lookDirection, 0.5f,
-            LayerMask.GetMask(new[] {"Rock", "Log"}));
-        if (!inFront)
+        var someThingIsInFront = !Physics.Raycast(positionToWalk3D, lookDirection, 0.5f,
+            LayerMask.GetMask(new[] {"MoveableItem"}));
+       
+        if (!someThingIsInFront)
         {
             Debug.DrawRay(positionToWalk3D, lookDirection, Color.cyan, 2);
         }
 
-        return beneath && inFront;
+        return beneath && someThingIsInFront;
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -6702821236119429313}
   - component: {fileID: 268920199515514160}
   - component: {fileID: 3434823506924404583}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec5481a05b330394d9964f2693a1e60c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 10
 --- !u!54 &268920199515514160
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -89,7 +90,7 @@ GameObject:
   - component: {fileID: 5289879924449651781}
   - component: {fileID: 2172530788309909335}
   - component: {fileID: 5641555098092859760}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: BackLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,7 +169,7 @@ GameObject:
   - component: {fileID: 1068652590140773872}
   - component: {fileID: 1871021754995187428}
   - component: {fileID: 3104204343933043232}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: FrontLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,7 +248,7 @@ GameObject:
   - component: {fileID: 6739369193091488345}
   - component: {fileID: 1315833515220559952}
   - component: {fileID: 3404745644141555388}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -326,7 +327,7 @@ GameObject:
   - component: {fileID: 5447510387415358693}
   - component: {fileID: 4756786941677073784}
   - component: {fileID: 6518731934774877239}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -318,6 +318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 1451519544}
+  animationAccuracy: 0.05
 --- !u!4 &1357590547
 Transform:
   m_ObjectHideFlags: 0
@@ -422,6 +423,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2153309333997008429, guid: 7889b1e59c588db4d81ea060d6e36fdd,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.82
+      objectReference: {fileID: 0}
     - target: {fileID: 2571965992833740946, guid: 7889b1e59c588db4d81ea060d6e36fdd,
         type: 3}
       propertyPath: m_IsActive
@@ -430,7 +436,7 @@ PrefabInstance:
     - target: {fileID: 4481396699869392332, guid: 7889b1e59c588db4d81ea060d6e36fdd,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8521946997331538660, guid: 7889b1e59c588db4d81ea060d6e36fdd,
         type: 3}

@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
             var enemyPo = new List<Vector2>();
             foreach (var enemy in enemies)
             {
-                var newEnemyPosition = enemy.Value.UpdateEnemyPosition(playerMovement.Position, enemyPo);
+                var newEnemyPosition = enemy.Value.UpdateEnemyPosition(playerMovement.TurnPosition, enemyPo);
                 enemyPo.Add(new Vector2(newEnemyPosition.x, newEnemyPosition.z));
                 Debug.Log($"{enemy} moved");
             }
