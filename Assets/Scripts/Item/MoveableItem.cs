@@ -7,43 +7,29 @@ using UnityEngine.SceneManagement;
 
 public class MoveableItem : MonoBehaviour
 {
-    private new Rigidbody rigidbody;
     private bool playerTrigger;
     private Vector3 turnPosition;
-    
+
     //For Animation
     private bool isAnimating = false;
     public float speed = 10f;
-    
-    
+
+
     public bool IsPlayerInTriggerToItem() => playerTrigger;
-    
-    
-    private void Awake()
-    {
-        rigidbody = GetComponent<Rigidbody>();
-    }
-    
+
     private void Start()
     {
-        Scene currentScene = SceneManager.GetActiveScene ();
-        
-        if (currentScene.name != "LevelBuilder")
-        {
-            rigidbody.isKinematic = false;  //myPrefab.GetComponent<Rigidbody>().isKinematic;
-        }
-
-        turnPosition = rigidbody.position;
+        turnPosition = transform.position;
     }
-    
+
     private void Update()
     {
         if (isAnimating)
         {
-            isAnimating = !UpdatePositionEveryFrame();
-            
+            isAnimating = UpdatePositionEveryFrame();
+
             //stop animating if they fall of the map
-            if (rigidbody.position.y < 1)
+            if (transform.position.y < 1)
             {
                 isAnimating = false;
             }
@@ -66,7 +52,7 @@ public class MoveableItem : MonoBehaviour
             playerTrigger = false;
         }
     }
-    
+
     public void PushItemInDirection(Vector3 newDirection)
     {
         if (!Physics.Raycast(turnPosition, newDirection, 1f))
@@ -78,13 +64,10 @@ public class MoveableItem : MonoBehaviour
 
     private bool UpdatePositionEveryFrame(double animationAccuracy = 0.05)
     {
-        var rigidbodyPosition = rigidbody.position;
-        var moveDirection = turnPosition - rigidbodyPosition;
+        var moveDirection = turnPosition - transform.position;
         var deltaMovement = moveDirection * (speed * Time.deltaTime);
-        rigidbody.MovePosition(rigidbodyPosition + deltaMovement);
-        
-        return (rigidbody.transform.position - turnPosition).magnitude < animationAccuracy;
-    }
+        transform.position += deltaMovement;
 
-   
+        return (transform.position - turnPosition).magnitude >= animationAccuracy;
+    }
 }

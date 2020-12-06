@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,28 +7,29 @@ using UnityEngine.SceneManagement;
 public class EnemyMovement : MonoBehaviour
 {
     public float speed = 10;
+    private bool isAnimating = false;
     
-    private List<Vertex> q;
+    private List<Vertex> djikstraQ;
 
     private List<Vertex> vertices = new List<Vertex>();
 
     private List<Vector2> takenEnemyPositions;
-    private Rigidbody _rigidbody;
 
     private Vector3 position;
 
     private void Start()
     {
-        _rigidbody = GetComponent<Rigidbody>();
-        Scene currentScene = SceneManager.GetActiveScene ();
-        if (currentScene.name != "LevelBuilder")
-        {
-            _rigidbody.isKinematic = false;  
-        }
-
-        position = _rigidbody.position;
+        position = transform.position;
     }
-    
+
+    private void Update()
+    {
+        if (isAnimating)
+        {
+            isAnimating = UpdatePositionPerFrame();
+        }
+    }
+
     public Vector3 UpdateEnemyPosition(Vector3 playerPosition, List<Vector2> takenEnemyPositions)
     {
         this.takenEnemyPositions = takenEnemyPositions;
@@ -39,19 +41,21 @@ public class EnemyMovement : MonoBehaviour
             return position;
         }
         
-        var new3DPosition = new Vector3(nextVertex.position.x, transform.position.y, nextVertex.position.y);
-        position = new3DPosition;
-        return new3DPosition;
+        position = new Vector3(nextVertex.position.x, transform.position.y, nextVertex.position.y);
+        isAnimating = true;
+        return position;
     }
 
     public bool UpdatePositionPerFrame(double animationAccuracy = 0.05)
     {
         
-        var moveDirection = position - _rigidbody.position;
+        var currentActualPosition = transform.position;
+        var moveDirection = position - currentActualPosition;
         var deltaMovement = moveDirection * (speed * Time.deltaTime);
-        _rigidbody.MovePosition(_rigidbody.position + deltaMovement);
-      
-        return (_rigidbody.transform.position - position).magnitude < animationAccuracy;
+        currentActualPosition += deltaMovement;
+        transform.position = currentActualPosition;
+
+        return (currentActualPosition - position).magnitude >= animationAccuracy;
     }
     
     //Djikstra
@@ -69,14 +73,14 @@ public class EnemyMovement : MonoBehaviour
         //Build up board recursively
         ExplorePosition(startVertex);
 
-        q = new List<Vertex>(vertices);
+        djikstraQ = new List<Vertex>(vertices);
 
-        while (q.Any())
+        while (djikstraQ.Any())
         {
             //sort manually because C# does not have a priority queue implemented
-            q.Sort();
-            var v = q.First();
-            q.Remove(v);
+            djikstraQ.Sort();
+            var v = djikstraQ.First();
+            djikstraQ.Remove(v);
 
             foreach (var neighbour in v.neighbours)
             {
@@ -214,7 +218,7 @@ public class EnemyMovement : MonoBehaviour
 
         var beneath = Physics.Raycast(positionToWalk3D, raycastDirection, 1f, LayerMask.GetMask(new[] {"Earth"}));
         Debug.DrawRay(positionToWalk3D, raycastDirection, Color.black, 2);
-        var someThingIsInFront = !Physics.Raycast(positionToWalk3D, lookDirection, 0.5f,
+        var someThingIsInFront = !Physics.Raycast(positionToWalk3D, lookDirection, 0.8f,
             LayerMask.GetMask(new[] {"MoveableItem"}));
        
         if (!someThingIsInFront)

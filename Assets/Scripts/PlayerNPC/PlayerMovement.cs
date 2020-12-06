@@ -3,15 +3,23 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Rigidbody _rigidbody;
+    
     public int speed = 10;
+    private bool isAnimating = false;
 
     public Vector3 TurnPosition { get; private set; }
 
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody>();
         TurnPosition = transform.position;
+    }
+
+    private void Update()
+    {
+        if (isAnimating)
+        {
+            isAnimating = UpdatePositionPerFrame();
+        }
     }
 
     public enum Directions
@@ -93,16 +101,19 @@ public class PlayerMovement : MonoBehaviour
         }
         
         TurnPosition = newPosition;
+        isAnimating = true;
         return newPosition;
     }
 
     public bool UpdatePositionPerFrame(double animationAccuracy = 0.005)
     {
-        var moveDirection = TurnPosition - _rigidbody.position;
+        var actualPosition = transform.position;
+        var moveDirection = TurnPosition - actualPosition;
         var deltaMovement = moveDirection * (speed * Time.deltaTime);
-        _rigidbody.MovePosition(_rigidbody.position + deltaMovement);
-        
-        return (_rigidbody.transform.position - TurnPosition).magnitude < animationAccuracy;
+        actualPosition += deltaMovement;
+        transform.position = actualPosition;
+
+        return (actualPosition - TurnPosition).magnitude >= animationAccuracy;
     }
 
     public void ReactToMoveableItem(Vector3 currentPosition, Vector3 newDirection)

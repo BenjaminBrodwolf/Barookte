@@ -98,24 +98,8 @@ public class GameManager : MonoBehaviour
                 enemyPo.Add(new Vector2(newEnemyPosition.x, newEnemyPosition.z));
                 Debug.Log($"{enemy} moved");
             }
-
-            isAnimating = true;
+            
         }
-
-        if (isAnimating)
-        {
-            var hasReached = playerMovement.UpdatePositionPerFrame(animationAccuracy);
-
-            var hasDone = false;
-            foreach (var enemy in enemies)
-            {
-                hasDone = enemy.Value.UpdatePositionPerFrame();
-            }
-
-            if (hasReached && hasDone)
-            {
-                isAnimating = false;
-            }
-        }
+        
     }
 }
