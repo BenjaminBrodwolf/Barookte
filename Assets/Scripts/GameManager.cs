@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     private GameObject gameLevel;
     private GameObject player;
     private PlayerMovement playerMovement;
+    public Camera playerCamera;
 
     private GameObject[] enemies;
 
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     {
         gameLevel = GameObject.FindGameObjectWithTag("GameLevel");
         player = GameObject.FindGameObjectWithTag("Player");
+        playerCamera.transform.SetParent(player.transform);
         playerMovement = player.GetComponent<PlayerMovement>();
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
     }
