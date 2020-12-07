@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3013751499010887391}
   - component: {fileID: 3469010964650773366}
+  - component: {fileID: 4481566933192281994}
+  - component: {fileID: -7364281501930429262}
   m_Layer: 0
   m_Name: Bridge
   m_TagString: Untagged
@@ -45,6 +47,31 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.5145087, z: 1}
   m_Center: {x: 0, y: 0.24274564, z: 0}
+--- !u!65 &4481566933192281994
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6533951804976197148}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.33, y: 1.16, z: 0.39}
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &-7364281501930429262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6533951804976197148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2d1f8ff33cbec3469fb830c44b4bf57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5663729161540655120
 PrefabInstance:
   m_ObjectHideFlags: 0

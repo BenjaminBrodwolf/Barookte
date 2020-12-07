@@ -133,16 +133,12 @@ public class GameManager : MonoBehaviour
     public void EndBlackout() => uiManager.EndBlackout();
 
 
-    public void WaitForSecondsFunctionAndRestart(int seconds)
-    {
+    public void WaitForSecondsFunctionAndRestart(int seconds) =>
         StartCoroutine(ExampleCoroutine(seconds));
-
-    }
-
+    
     IEnumerator ExampleCoroutine(int seconds)
     {
         yield return new WaitForSeconds(seconds);
         SceneManager.LoadScene("Baröökte_Scene1"); //Load scene called Game.
-
     }
 }
