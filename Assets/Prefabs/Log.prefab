@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4640684333258385731}
   - component: {fileID: 8818474217849044217}
   - component: {fileID: 5195185413739258412}
+  - component: {fileID: 5104786957383188585}
   m_Layer: 10
   m_Name: Log
   m_TagString: Item
@@ -135,6 +136,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.179676, y: 2.0000005, z: 1.0000002}
   m_Center: {x: 0.5898375, y: 2.1635966e-15, z: -0.00000009934107}
+--- !u!54 &5104786957383188585
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5195185413739258411}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6524437601431630168
 GameObject:
   m_ObjectHideFlags: 0

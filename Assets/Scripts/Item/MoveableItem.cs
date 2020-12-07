@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class MoveableItem : MonoBehaviour
 {
+    private new Rigidbody rigidbody;
     private bool playerTrigger;
     private Vector3 turnPosition;
 
@@ -17,10 +18,24 @@ public class MoveableItem : MonoBehaviour
 
     public bool IsPlayerInTriggerToItem() => playerTrigger;
 
+    
+    private void Awake()
+    {
+        rigidbody = GetComponent<Rigidbody>();
+    }
     private void Start()
     {
         turnPosition = transform.position;
+        
+        Scene currentScene = SceneManager.GetActiveScene ();
+        
+        if (currentScene.name != "LevelBuilder")
+        {
+            rigidbody.isKinematic = false;  //myPrefab.GetComponent<Rigidbody>().isKinematic;
+        }
     }
+    
+    
 
     private void Update()
     {

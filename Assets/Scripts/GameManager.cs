@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public double animationAccuracy = 0.05;
 
     private Dictionary<GameObject, EnemyMovement> enemies;
-    
+
 
     void Start()
     {
@@ -25,10 +25,10 @@ public class GameManager : MonoBehaviour
         this.enemies = new Dictionary<GameObject, EnemyMovement>();
         foreach (var enemy in enemies)
         {
-            this.enemies.Add(enemy, enemy.GetComponent<EnemyMovement>());   
+            this.enemies.Add(enemy, enemy.GetComponent<EnemyMovement>());
         }
     }
-    
+
 
     // Update is called once per frame
     void Update()
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
             canPlayerMove = playerMovement.CanMove(PlayerMovement.Directions.Up);
             if (canPlayerMove)
             {
-               playerMovement.UpdatePosition(PlayerMovement.Directions.Up);
+                playerMovement.UpdatePosition(PlayerMovement.Directions.Up);
                 hasPlayerMoved = true;
             }
         }
@@ -89,16 +89,19 @@ public class GameManager : MonoBehaviour
 
         if (hasPlayerMoved)
         {
-            Debug.Log($"enemy need to be moved");
-            var enemyPo = new List<Vector2>();
-            foreach (var enemy in enemies)
-            {
-                var newEnemyPosition = enemy.Value.UpdateEnemyPosition(playerMovement.TurnPosition, enemyPo);
-                enemyPo.Add(new Vector2(newEnemyPosition.x, newEnemyPosition.z));
-                Debug.Log($"{enemy} moved");
-            }
-            
+            EnemyTurn();
         }
-        
+    }
+
+    public void EnemyTurn()
+    {
+        Debug.Log("enemy need to be moved");
+        var enemyPo = new List<Vector2>();
+        foreach (var enemy in enemies)
+        {
+            var newEnemyPosition = enemy.Value.UpdateEnemyPosition(playerMovement.TurnPosition, enemyPo);
+            enemyPo.Add(new Vector2(newEnemyPosition.x, newEnemyPosition.z));
+            Debug.Log($"{enemy} moved");
+        }
     }
 }

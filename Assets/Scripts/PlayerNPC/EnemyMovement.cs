@@ -16,7 +16,7 @@ public class EnemyMovement : MonoBehaviour
     private List<Vector2> takenEnemyPositions;
 
     private Vector3 position;
-
+    
     private void Start()
     {
         position = transform.position;
@@ -29,6 +29,8 @@ public class EnemyMovement : MonoBehaviour
             isAnimating = UpdatePositionPerFrame();
         }
     }
+    
+    
 
     public Vector3 UpdateEnemyPosition(Vector3 playerPosition, List<Vector2> takenEnemyPositions)
     {
@@ -48,7 +50,6 @@ public class EnemyMovement : MonoBehaviour
 
     public bool UpdatePositionPerFrame(double animationAccuracy = 0.05)
     {
-        
         var currentActualPosition = transform.position;
         var moveDirection = position - currentActualPosition;
         var deltaMovement = moveDirection * (speed * Time.deltaTime);
@@ -216,10 +217,9 @@ public class EnemyMovement : MonoBehaviour
         var currentPosition3D = (new Vector3(currentPosition.x, 1.5f, currentPosition.y));
         var lookDirection = (currentPosition3D - positionToWalk3D);
 
-        var beneath = Physics.Raycast(positionToWalk3D, raycastDirection, 1f, LayerMask.GetMask(new[] {"Earth"}));
+        var beneath = Physics.Raycast(positionToWalk3D, raycastDirection, 1f, LayerMask.GetMask( "Earth"));
         Debug.DrawRay(positionToWalk3D, raycastDirection, Color.black, 2);
-        var someThingIsInFront = !Physics.Raycast(positionToWalk3D, lookDirection, 0.8f,
-            LayerMask.GetMask(new[] {"MoveableItem"}));
+        var someThingIsInFront = !Physics.Raycast(positionToWalk3D, lookDirection, 0.8f, LayerMask.GetMask("MoveableItem"));
        
         if (!someThingIsInFront)
         {
@@ -228,4 +228,16 @@ public class EnemyMovement : MonoBehaviour
 
         return beneath && someThingIsInFront;
     }
+    
+    
+    // Player attack - game over
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            // Debug.Log("Trigger with Player !");
+            SceneManager.LoadScene("Baröökte_Scene1"); //Load scene called Game.
+        }
+    }
+
 }
