@@ -13,8 +13,7 @@ public class GameManager : MonoBehaviour
     public double animationAccuracy = 0.05;
 
     private Dictionary<GameObject, EnemyMovement> enemies;
-
-    private bool isAnimating = false;
+    
 
     void Start()
     {
