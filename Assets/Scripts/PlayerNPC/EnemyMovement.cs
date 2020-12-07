@@ -240,8 +240,8 @@ public class EnemyMovement : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             // Debug.Log("Trigger with Player !");
-            // gameManagerScript.BlackoutFunction();
-            SceneManager.LoadScene("Baröökte_Scene1"); //Load scene called Game.
+            gameManagerScript.StartBlackout();
+            gameManagerScript.WaitForSecondsFunctionAndRestart(3);
         }
     }
 

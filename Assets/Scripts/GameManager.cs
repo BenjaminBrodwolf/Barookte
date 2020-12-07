@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,12 +15,11 @@ public class GameManager : MonoBehaviour
 
     private Dictionary<GameObject, EnemyMovement> enemies;
 
-    
+
     // UI
     private UIManager uiManager;
-    private bool blackoutActivated;
-    private bool pause;
-    
+
+
     void Start()
     {
         gameLevel = GameObject.FindGameObjectWithTag("GameLevel");
@@ -32,26 +32,30 @@ public class GameManager : MonoBehaviour
         {
             this.enemies.Add(enemy, enemy.GetComponent<EnemyMovement>());
         }
-        
+
         // UI
         uiManager = FindObjectOfType<UIManager>();
-        blackoutActivated = false;
-        pause = false;
-        
-        BlackoutFunction();
+
+        // WaitForSecondsFunction(10);
+
+        EndBlackout();
     }
 
 
     // Update is called once per frame
     void Update()
     {
-
         if (Input.GetKeyDown(KeyCode.L))
         {
-            BlackoutFunction();
+            uiManager.StartBlackout();
         }
-    
-        
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            uiManager.EndBlackout();
+        }
+
+
         var up = Input.GetKeyDown(KeyCode.UpArrow);
         var down = Input.GetKeyDown(KeyCode.DownArrow);
         var left = Input.GetKeyDown(KeyCode.LeftArrow);
@@ -123,19 +127,22 @@ public class GameManager : MonoBehaviour
             Debug.Log($"{enemy} moved");
         }
     }
-    
+
     // UI
-    public void BlackoutFunction()
+    public void StartBlackout() => uiManager.StartBlackout();
+    public void EndBlackout() => uiManager.EndBlackout();
+
+
+    public void WaitForSecondsFunctionAndRestart(int seconds)
     {
-        blackoutActivated = !blackoutActivated;
-        if (blackoutActivated)
-        {
-            uiManager.SetBlackoutOpacity(1);
-        }
-        else
-        {
-            uiManager.SetBlackoutOpacity(0);
-        }
-     
+        StartCoroutine(ExampleCoroutine(seconds));
+
+    }
+
+    IEnumerator ExampleCoroutine(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        SceneManager.LoadScene("Baröökte_Scene1"); //Load scene called Game.
+
     }
 }
