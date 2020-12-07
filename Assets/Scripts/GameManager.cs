@@ -14,7 +14,12 @@ public class GameManager : MonoBehaviour
 
     private Dictionary<GameObject, EnemyMovement> enemies;
 
-
+    
+    // UI
+    private UIManager uiManager;
+    private bool blackoutActivated;
+    private bool pause;
+    
     void Start()
     {
         gameLevel = GameObject.FindGameObjectWithTag("GameLevel");
@@ -27,12 +32,26 @@ public class GameManager : MonoBehaviour
         {
             this.enemies.Add(enemy, enemy.GetComponent<EnemyMovement>());
         }
+        
+        // UI
+        uiManager = FindObjectOfType<UIManager>();
+        blackoutActivated = false;
+        pause = false;
+        
+        BlackoutFunction();
     }
 
 
     // Update is called once per frame
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            BlackoutFunction();
+        }
+    
+        
         var up = Input.GetKeyDown(KeyCode.UpArrow);
         var down = Input.GetKeyDown(KeyCode.DownArrow);
         var left = Input.GetKeyDown(KeyCode.LeftArrow);
@@ -103,5 +122,20 @@ public class GameManager : MonoBehaviour
             enemyPo.Add(new Vector2(newEnemyPosition.x, newEnemyPosition.z));
             Debug.Log($"{enemy} moved");
         }
+    }
+    
+    // UI
+    public void BlackoutFunction()
+    {
+        blackoutActivated = !blackoutActivated;
+        if (blackoutActivated)
+        {
+            uiManager.SetBlackoutOpacity(1);
+        }
+        else
+        {
+            uiManager.SetBlackoutOpacity(0);
+        }
+     
     }
 }

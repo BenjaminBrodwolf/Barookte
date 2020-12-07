@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class EnemyMovement : MonoBehaviour
 {
+    private GameManager gameManagerScript;
+    
     public float speed = 10;
     private bool isAnimating = false;
     
@@ -20,6 +22,8 @@ public class EnemyMovement : MonoBehaviour
     private void Start()
     {
         position = transform.position;
+       
+        gameManagerScript =  GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
     private void Update()
@@ -236,6 +240,7 @@ public class EnemyMovement : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             // Debug.Log("Trigger with Player !");
+            // gameManagerScript.BlackoutFunction();
             SceneManager.LoadScene("Baröökte_Scene1"); //Load scene called Game.
         }
     }

@@ -10,6 +10,7 @@ TagManager:
   - Log
   - Rock
   - GameLevel
+  - GameManager
   layers:
   - Default
   - TransparentFX

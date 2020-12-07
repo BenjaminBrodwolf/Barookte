@@ -125,7 +125,6 @@ public class PlayerMovement : MonoBehaviour
            
             if (moveableItemScript.IsPlayerInTriggerToItem())
             {
-                // TODO: execute next round, so that Enemy do the next turn
                 moveableItemScript.PushItemInDirection(newDirection);
                 gameManagerScript.EnemyTurn();
             }
