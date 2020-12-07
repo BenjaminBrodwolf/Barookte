@@ -43,6 +43,9 @@ public class PlayerMovement : MonoBehaviour
         {
             case Directions.Up:
             {
+                gameObject.transform.GetChild(0).gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
+                // gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
+
                 var wannaMoveDirection = new Vector3(0, 0, 1);
                 ReactToMoveableItem(TurnPosition, wannaMoveDirection);
                 
@@ -53,6 +56,8 @@ public class PlayerMovement : MonoBehaviour
             }
             case Directions.Down:
             {
+                gameObject.transform.GetChild(0).gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
+
                 var wannaMoveDirection = new Vector3(0, 0, -1);
                 ReactToMoveableItem(TurnPosition, wannaMoveDirection);
                 
@@ -61,6 +66,8 @@ public class PlayerMovement : MonoBehaviour
             }
             case Directions.Left:
             {
+                gameObject.transform.GetChild(0).gameObject.transform.eulerAngles = new Vector3(0, 270, 0);
+                
                 var wannaMoveDirection = new Vector3(-1, 0, 0);
                 ReactToMoveableItem(TurnPosition, wannaMoveDirection);
                 
@@ -69,6 +76,9 @@ public class PlayerMovement : MonoBehaviour
             }
             case Directions.Rigth:
             {
+                
+                gameObject.transform.GetChild(0).gameObject.transform.eulerAngles = new Vector3(0, 90, 0);
+
                 var wannaMoveDirection = new Vector3(1, 0, 0);
                 ReactToMoveableItem(TurnPosition, wannaMoveDirection);
 
@@ -87,6 +97,7 @@ public class PlayerMovement : MonoBehaviour
         {
             case Directions.Left:
                 newPosition += new Vector3(-1, 0, 0);
+                
                 break;
             case Directions.Up:
                 newPosition += new Vector3(0, 0, 1);

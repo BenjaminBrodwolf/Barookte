@@ -35,7 +35,6 @@ public class EnemyMovement : MonoBehaviour
     }
     
     
-
     public Vector3 UpdateEnemyPosition(Vector3 playerPosition, List<Vector2> takenEnemyPositions)
     {
         this.takenEnemyPositions = takenEnemyPositions;
@@ -67,7 +66,6 @@ public class EnemyMovement : MonoBehaviour
     public List<Vertex> GetFastestPath(Vector3 playerPosition)
     {
         vertices = new List<Vertex>();
-
         
         var enemyPosition2D = new Vector2(((int) position.x), ((int) position.z));
 
