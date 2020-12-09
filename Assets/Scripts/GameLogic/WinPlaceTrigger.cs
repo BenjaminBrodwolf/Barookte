@@ -16,7 +16,7 @@ public class WinPlaceTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Debug.Log("Trigger with Player !");
+             Debug.Log("Trigger with Player Win !");
             gameManagerScript.StartBlackout();
             gameManagerScript.WaitForSecondsFunctionAndRestart(3);
         }

@@ -91,7 +91,7 @@ MonoBehaviour:
     min: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 0.367
     min: 0
     max: 1
   scatter:
@@ -143,7 +143,7 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 2.97
+    m_Value: 4
     min: 0
     max: 4
   directLightingStrength:

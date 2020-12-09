@@ -248,7 +248,7 @@ public class EnemyMovement : MonoBehaviour
         var beneath = Physics.Raycast(positionToWalk3D, raycastDirection, 1f, LayerMask.GetMask("Earth"));
         Debug.DrawRay(positionToWalk3D, raycastDirection, Color.black, 2);
         var someThingIsInFront =
-            !Physics.Raycast(positionToWalk3D, lookDirection, 0.8f, LayerMask.GetMask("MoveableItem"));
+            !Physics.Raycast(positionToWalk3D, lookDirection, 0.8f, LayerMask.GetMask(new [] {"MoveableItem", "PathBlocker"}));
 
         if (!someThingIsInFront)
         {
@@ -264,7 +264,7 @@ public class EnemyMovement : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Debug.Log("Trigger with Player !");
+            Debug.Log("Trigger with Player Enemy !");
             gameManagerScript.StartBlackout();
             gameManagerScript.WaitForSecondsFunctionAndRestart(3);
         }

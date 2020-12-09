@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
         uiManager = FindObjectOfType<UIManager>();
 
         // WaitForSecondsFunction(10);
-
+        
         EndBlackout();
     }
 
@@ -140,5 +140,6 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(seconds);
         SceneManager.LoadScene("Baröökte_Scene1"); //Load scene called Game.
+        EndBlackout();
     }
 }
