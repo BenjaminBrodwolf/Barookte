@@ -7,10 +7,10 @@ using UnityEngine.SceneManagement;
 public class EnemyMovement : MonoBehaviour
 {
     private GameManager gameManagerScript;
-    
+
     public float speed = 10;
     private bool isAnimating = false;
-    
+
     private List<Vertex> djikstraQ;
 
     private List<Vertex> vertices = new List<Vertex>();
@@ -18,12 +18,12 @@ public class EnemyMovement : MonoBehaviour
     private List<Vector2> takenEnemyPositions;
 
     private Vector3 position;
-    
+
     private void Start()
     {
         position = transform.position;
-       
-        gameManagerScript =  GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+
+        gameManagerScript = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
     private void Update()
@@ -33,8 +33,8 @@ public class EnemyMovement : MonoBehaviour
             isAnimating = UpdatePositionPerFrame();
         }
     }
-    
-    
+
+
     public Vector3 UpdateEnemyPosition(Vector3 playerPosition, List<Vector2> takenEnemyPositions)
     {
         this.takenEnemyPositions = takenEnemyPositions;
@@ -45,10 +45,36 @@ public class EnemyMovement : MonoBehaviour
         {
             return position;
         }
-        
+
+        var oldPos = position;
         position = new Vector3(nextVertex.position.x, transform.position.y, nextVertex.position.y);
+
+        var deltaMovement = position - oldPos;
+
+        SetRotation(deltaMovement);
+
         isAnimating = true;
         return position;
+    }
+
+    private void SetRotation(Vector3 deltaMovement)
+    {
+        var rot = getYRotationFromXZ(deltaMovement);
+
+        var newAngles = new Vector3(0,rot, 0);
+        var transformRotation = transform.rotation;
+        transformRotation.eulerAngles = newAngles;
+        transform.rotation = transformRotation;
+    }
+
+    private static float getYRotationFromXZ(Vector3 deltaMovement)
+    {
+        var xRot = Math.Abs(deltaMovement.x) * Mathf.Asin(deltaMovement.x);
+        var zRot = Math.Abs(deltaMovement.z) * Mathf.Acos(deltaMovement.z);
+        xRot *= Mathf.Rad2Deg;
+        zRot *= Mathf.Rad2Deg;
+        var rot = xRot + zRot;
+        return rot;
     }
 
     public bool UpdatePositionPerFrame(double animationAccuracy = 0.05)
@@ -61,12 +87,12 @@ public class EnemyMovement : MonoBehaviour
 
         return (currentActualPosition - position).magnitude >= animationAccuracy;
     }
-    
+
     //Djikstra
     public List<Vertex> GetFastestPath(Vector3 playerPosition)
     {
         vertices = new List<Vertex>();
-        
+
         var enemyPosition2D = new Vector2(((int) position.x), ((int) position.z));
 
         var startVertex = new Vertex(enemyPosition2D);
@@ -219,10 +245,11 @@ public class EnemyMovement : MonoBehaviour
         var currentPosition3D = (new Vector3(currentPosition.x, 1.5f, currentPosition.y));
         var lookDirection = (currentPosition3D - positionToWalk3D);
 
-        var beneath = Physics.Raycast(positionToWalk3D, raycastDirection, 1f, LayerMask.GetMask( "Earth"));
+        var beneath = Physics.Raycast(positionToWalk3D, raycastDirection, 1f, LayerMask.GetMask("Earth"));
         Debug.DrawRay(positionToWalk3D, raycastDirection, Color.black, 2);
-        var someThingIsInFront = !Physics.Raycast(positionToWalk3D, lookDirection, 0.8f, LayerMask.GetMask("MoveableItem"));
-       
+        var someThingIsInFront =
+            !Physics.Raycast(positionToWalk3D, lookDirection, 0.8f, LayerMask.GetMask("MoveableItem"));
+
         if (!someThingIsInFront)
         {
             Debug.DrawRay(positionToWalk3D, lookDirection, Color.cyan, 2);
@@ -230,8 +257,8 @@ public class EnemyMovement : MonoBehaviour
 
         return beneath && someThingIsInFront;
     }
-    
-    
+
+
     // Player attack - game over
     private void OnTriggerEnter(Collider other)
     {
@@ -242,5 +269,4 @@ public class EnemyMovement : MonoBehaviour
             gameManagerScript.WaitForSecondsFunctionAndRestart(3);
         }
     }
-
 }
