@@ -10,44 +10,39 @@ public class MoveableItem : MonoBehaviour
     private new Rigidbody rigidbody;
     private bool playerTrigger;
     private Vector3 turnPosition;
+    private Vector3 previousTurnPosition;
 
     //For Animation
-    private bool isAnimating = false;
-    public float speed = 10f;
-
+    public float animationTime = 0.2f;
+    private float timeElapsed;
 
     public bool IsPlayerInTriggerToItem() => playerTrigger;
 
-    
+
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
     }
+
     private void Start()
     {
         turnPosition = transform.position;
-        
-        Scene currentScene = SceneManager.GetActiveScene ();
-        
+        timeElapsed = animationTime;
+
+        Scene currentScene = SceneManager.GetActiveScene();
+
         if (currentScene.name != "LevelBuilder")
         {
-            rigidbody.isKinematic = false;  //myPrefab.GetComponent<Rigidbody>().isKinematic;
+            rigidbody.isKinematic = false; //myPrefab.GetComponent<Rigidbody>().isKinematic;
         }
     }
-    
-    
+
 
     private void Update()
     {
-        if (isAnimating)
+        if (timeElapsed < animationTime)
         {
-            isAnimating = UpdatePositionEveryFrame();
-
-            //stop animating if they fall of the map
-            if (transform.position.y < 1)
-            {
-                isAnimating = false;
-            }
+             UpdatePositionEveryFrame();
         }
     }
 
@@ -72,17 +67,26 @@ public class MoveableItem : MonoBehaviour
     {
         if (!Physics.Raycast(turnPosition, newDirection, 1f))
         {
+            timeElapsed = 0;
+            previousTurnPosition = turnPosition;
             turnPosition = turnPosition + newDirection;
-            isAnimating = true;
         }
     }
 
-    private bool UpdatePositionEveryFrame(double animationAccuracy = 0.05)
+    private void UpdatePositionEveryFrame(double animationAccuracy = 0.05)
     {
-        var moveDirection = turnPosition - transform.position;
-        var deltaMovement = moveDirection * (speed * Time.deltaTime);
-        transform.position += deltaMovement;
+        var pos = Vector3.Lerp(previousTurnPosition, turnPosition, timeElapsed / animationTime);
+        timeElapsed += Time.deltaTime;
+        rigidbody.MovePosition(pos);
+        rigidbody.velocity = Vector3.zero;
+        rigidbody.angularVelocity = Vector3.zero;
 
-        return (transform.position - turnPosition).magnitude >= animationAccuracy;
+        if (timeElapsed >= animationTime)
+        {
+            rigidbody.MovePosition(turnPosition);
+            rigidbody.velocity = Vector3.zero;
+            rigidbody.angularVelocity = Vector3.zero;
+        }
+        
     }
 }
