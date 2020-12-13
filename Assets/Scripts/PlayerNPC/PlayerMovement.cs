@@ -13,6 +13,10 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         TurnPosition = transform.position;
+    }
+
+    private void Start()
+    {
         gameManagerObject = GameObject.FindGameObjectWithTag("GameManager");
         gameManagerScript = gameManagerObject.GetComponent<GameManager>();
         Debug.Log(gameManagerScript);

@@ -9,13 +9,9 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-       StartBlackout();
+       //StartBlackout();
     }
-
- 
-
     
-
     public void EndBlackout() => fadeBlackout.SetActive(false);
     
     public void StartBlackout() => fadeBlackout.SetActive(true);

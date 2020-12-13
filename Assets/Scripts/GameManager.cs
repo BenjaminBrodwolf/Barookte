@@ -26,11 +26,14 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerCamera.transform.SetParent(player.transform);
         playerMovement = player.GetComponent<PlayerMovement>();
-        var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        playerMovement.enabled = true;
+        var enemiesGOs = GameObject.FindGameObjectsWithTag("Enemy");
         this.enemies = new Dictionary<GameObject, EnemyMovement>();
-        foreach (var enemy in enemies)
+        foreach (var enemy in enemiesGOs)
         {
-            this.enemies.Add(enemy, enemy.GetComponent<EnemyMovement>());
+            var enemyScript = enemy.GetComponent<EnemyMovement>();
+            enemyScript.enabled = true;
+            this.enemies.Add(enemy, enemyScript);
         }
 
         // UI

@@ -18,14 +18,19 @@ public class EnemyMovement : MonoBehaviour
     private List<Vector2> takenEnemyPositions;
 
     private Vector3 position;
+    private Scene currentScene;
+
+    private void Awake()
+    {
+        currentScene = SceneManager.GetActiveScene ();
+    }
 
     private void Start()
     {
         position = transform.position;
-
         gameManagerScript = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
-
+    
     private void Update()
     {
         if (isAnimating)
@@ -262,7 +267,7 @@ public class EnemyMovement : MonoBehaviour
     // Player attack - game over
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (currentScene.name != "LevelBuilder" && other.CompareTag("Player"))
         {
             Debug.Log("Trigger with Player Enemy !");
             gameManagerScript.StartBlackout();
