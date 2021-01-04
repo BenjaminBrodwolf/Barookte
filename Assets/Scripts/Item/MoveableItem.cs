@@ -17,10 +17,11 @@ public class MoveableItem : MonoBehaviour
     private float timeElapsed;
 
     public bool IsPlayerInTriggerToItem() => playerTrigger;
-
+    private AudioSource audioSource;
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         rigidbody = GetComponent<Rigidbody>();
     }
 
@@ -70,6 +71,8 @@ public class MoveableItem : MonoBehaviour
             timeElapsed = 0;
             previousTurnPosition = turnPosition;
             turnPosition = turnPosition + newDirection;
+            audioSource.pitch = UnityEngine.Random.Range(0.8f, 1.2f);
+            audioSource.Play();
         }
     }
 
