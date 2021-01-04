@@ -426,7 +426,17 @@ PrefabInstance:
     - target: {fileID: 4671982673602620076, guid: 741f7c883c596f648830b1718be91e9b,
         type: 3}
       propertyPath: waveFrequency
-      value: 0.2
+      value: 0.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671982673602620076, guid: 741f7c883c596f648830b1718be91e9b,
+        type: 3}
+      propertyPath: waveHeight
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671982673602620076, guid: 741f7c883c596f648830b1718be91e9b,
+        type: 3}
+      propertyPath: waveLength
+      value: 0.57
       objectReference: {fileID: 0}
     - target: {fileID: 4671982673602620077, guid: 741f7c883c596f648830b1718be91e9b,
         type: 3}
@@ -526,7 +536,17 @@ PrefabInstance:
     - target: {fileID: 4671982673602620076, guid: 741f7c883c596f648830b1718be91e9b,
         type: 3}
       propertyPath: waveFrequency
-      value: 0.2
+      value: 0.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671982673602620076, guid: 741f7c883c596f648830b1718be91e9b,
+        type: 3}
+      propertyPath: waveHeight
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671982673602620076, guid: 741f7c883c596f648830b1718be91e9b,
+        type: 3}
+      propertyPath: waveLength
+      value: 0.57
       objectReference: {fileID: 0}
     - target: {fileID: 4671982673602620077, guid: 741f7c883c596f648830b1718be91e9b,
         type: 3}
@@ -626,7 +646,17 @@ PrefabInstance:
     - target: {fileID: 4671982673602620076, guid: 741f7c883c596f648830b1718be91e9b,
         type: 3}
       propertyPath: waveFrequency
-      value: 0.2
+      value: 0.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671982673602620076, guid: 741f7c883c596f648830b1718be91e9b,
+        type: 3}
+      propertyPath: waveHeight
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671982673602620076, guid: 741f7c883c596f648830b1718be91e9b,
+        type: 3}
+      propertyPath: waveLength
+      value: 0.57
       objectReference: {fileID: 0}
     - target: {fileID: 4671982673602620077, guid: 741f7c883c596f648830b1718be91e9b,
         type: 3}
@@ -726,7 +756,17 @@ PrefabInstance:
     - target: {fileID: 4671982673602620076, guid: 741f7c883c596f648830b1718be91e9b,
         type: 3}
       propertyPath: waveFrequency
-      value: 0.2
+      value: 0.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671982673602620076, guid: 741f7c883c596f648830b1718be91e9b,
+        type: 3}
+      propertyPath: waveHeight
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671982673602620076, guid: 741f7c883c596f648830b1718be91e9b,
+        type: 3}
+      propertyPath: waveLength
+      value: 0.57
       objectReference: {fileID: 0}
     - target: {fileID: 4671982673602620077, guid: 741f7c883c596f648830b1718be91e9b,
         type: 3}
