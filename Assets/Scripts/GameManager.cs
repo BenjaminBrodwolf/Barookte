@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -10,7 +8,7 @@ public class GameManager : MonoBehaviour
     private GameObject gameLevel;
     private GameObject player;
     private PlayerMovement playerMovement;
-    public Camera playerCamera;
+    private Camera playerCamera;
     public double animationAccuracy = 0.05;
 
     private Dictionary<GameObject, EnemyMovement> enemies;
@@ -22,8 +20,10 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        playerCamera = Camera.main;
         gameLevel = GameObject.FindGameObjectWithTag("GameLevel");
         player = GameObject.FindGameObjectWithTag("Player");
+        playerCamera.transform.position += player.transform.position;
         playerCamera.transform.SetParent(player.transform);
         playerMovement = player.GetComponent<PlayerMovement>();
         playerMovement.enabled = true;
@@ -58,6 +58,10 @@ public class GameManager : MonoBehaviour
             uiManager.EndBlackout();
         }
 
+        // if (playerMovement.isAlreadyMoving)
+        // {
+        //     return;
+        // }
 
         var up = Input.GetKeyDown(KeyCode.UpArrow);
         var down = Input.GetKeyDown(KeyCode.DownArrow);
@@ -66,8 +70,7 @@ public class GameManager : MonoBehaviour
 
         var hasPlayerMoved = false;
         var canPlayerMove = false;
-
-
+        
         if (up)
         {
             Debug.Log("up");

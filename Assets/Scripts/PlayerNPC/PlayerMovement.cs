@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
     private GameObject gameManagerObject;
     private GameManager gameManagerScript;
     public int speed = 10;
-    private bool isAnimating = false;
+    public bool isAlreadyMoving = false;
 
     public Vector3 TurnPosition { get; private set; }
 
@@ -24,9 +24,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (isAnimating)
+        if (isAlreadyMoving)
         {
-            isAnimating = UpdatePositionPerFrame();
+            isAlreadyMoving = UpdatePositionPerFrame();
         }
     }
 
@@ -57,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
 
                 Debug.DrawRay(TurnPosition + wannaMoveDirection, raycastDirection, Color.red, 20);
 
-                return Physics.Raycast(TurnPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
+                return Physics.Raycast(TurnPosition + wannaMoveDirection, raycastDirection, 1f, LayerMask.GetMask("Earth"))
                        && !Physics.Raycast(TurnPosition, new Vector3(0, 0, 1), 1f, LayerMask.GetMask("MoveableItem"));
             }
             case Directions.Down:
@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
                 var wannaMoveDirection = new Vector3(0, 0, -1);
                 ReactToMoveableItem(TurnPosition, wannaMoveDirection);
 
-                return Physics.Raycast(TurnPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
+                return Physics.Raycast(TurnPosition + wannaMoveDirection, raycastDirection, 1f, LayerMask.GetMask("Earth"))
                        && !Physics.Raycast(TurnPosition, new Vector3(0, 0, -1), 1f, LayerMask.GetMask("MoveableItem"));
             }
             case Directions.Left:
@@ -79,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
                 var wannaMoveDirection = new Vector3(-1, 0, 0);
                 ReactToMoveableItem(TurnPosition, wannaMoveDirection);
 
-                return Physics.Raycast(TurnPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
+                return Physics.Raycast(TurnPosition + wannaMoveDirection, raycastDirection, 1f, LayerMask.GetMask("Earth"))
                        && !Physics.Raycast(TurnPosition, new Vector3(-1, 0, 0), 1f, LayerMask.GetMask("MoveableItem"));
             }
             case Directions.Rigth:
@@ -90,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
                 var wannaMoveDirection = new Vector3(1, 0, 0);
                 ReactToMoveableItem(TurnPosition, wannaMoveDirection);
 
-                return Physics.Raycast(TurnPosition + wannaMoveDirection, raycastDirection, LayerMask.GetMask("Earth"))
+                return Physics.Raycast(TurnPosition + wannaMoveDirection, raycastDirection, 1f, LayerMask.GetMask("Earth"))
                        && !Physics.Raycast(TurnPosition, new Vector3(1, 0, 0), 1f, LayerMask.GetMask("MoveableItem"));
             }
                
@@ -122,12 +122,14 @@ public class PlayerMovement : MonoBehaviour
         }
 
         TurnPosition = newPosition;
-        isAnimating = true;
+        isAlreadyMoving = true;
         return newPosition;
     }
 
     public bool UpdatePositionPerFrame(double animationAccuracy = 0.005)
     {
+        
+        //var lerp = Vector3.Lerp(oldTurnPosition, TurnPosition, tick / animtaionTime)
         var actualPosition = transform.position;
         var moveDirection = TurnPosition - actualPosition;
         var deltaMovement = moveDirection * (speed * Time.deltaTime);
