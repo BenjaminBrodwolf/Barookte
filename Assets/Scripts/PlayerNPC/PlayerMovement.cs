@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Random = System.Random;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     private GameManager gameManagerScript;
     public int speed = 10;
     public bool isAlreadyMoving = false;
+    AudioSource audioSource;
+    public AudioClip footsteps;
 
     public Vector3 TurnPosition { get; private set; }
 
@@ -17,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         gameManagerObject = GameObject.FindGameObjectWithTag("GameManager");
         gameManagerScript = gameManagerObject.GetComponent<GameManager>();
         Debug.Log(gameManagerScript);
@@ -26,8 +30,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isAlreadyMoving)
         {
+           
             isAlreadyMoving = UpdatePositionPerFrame();
         }
+
     }
 
     public enum Directions
@@ -120,6 +126,10 @@ public class PlayerMovement : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
         }
+
+        audioSource.clip = footsteps;
+        audioSource.pitch = UnityEngine.Random.Range(1f, 1.4f);
+        audioSource.Play();
 
         TurnPosition = newPosition;
         isAlreadyMoving = true;
