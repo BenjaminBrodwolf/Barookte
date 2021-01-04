@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/levelNosoMuch.unity
     guid: 89579fc25d7267644a1cbd7d7ea1db41
   - enabled: 0
-    path: Assets/Scenes/LevelBuilder.unity
+    path: Assets/Levels/LevelBuilder.unity
     guid: 8fffb24fcb9211d408729340689e68a3
   m_configObjects: {}

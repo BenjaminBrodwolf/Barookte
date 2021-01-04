@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     // UI
     private UIManager uiManager;
 
-
+    public List<string> gameLevels;
     void Start()
     {
         playerCamera = Camera.main;
@@ -139,13 +139,12 @@ public class GameManager : MonoBehaviour
     public void EndBlackout() => uiManager.EndBlackout();
 
 
-    public void WaitForSecondsFunctionAndRestart(int seconds) =>
+    public void WaitForSeconds(int seconds) =>
         StartCoroutine(ExampleCoroutine(seconds));
     
-    IEnumerator ExampleCoroutine(int seconds)
+    IEnumerator ExampleCoroutine(int seconds )
     {
         yield return new WaitForSeconds(seconds);
-        SceneManager.LoadScene("Baröökte_Scene1"); //Load scene called Game.
-        EndBlackout();
+  
     }
 }

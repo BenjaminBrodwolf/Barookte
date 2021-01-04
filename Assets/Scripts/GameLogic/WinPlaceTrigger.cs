@@ -32,7 +32,9 @@ public class WinPlaceTrigger : MonoBehaviour
 
             Debug.Log("Trigger with Player Win !");
             gameManagerScript.StartBlackout();
-            gameManagerScript.WaitForSecondsFunctionAndRestart(3);
+            gameManagerScript.WaitForSeconds(3);
+            SceneManager.LoadScene(currentScene.name); //Load scene called Game.
+            gameManagerScript.EndBlackout();
         }
     }
 }

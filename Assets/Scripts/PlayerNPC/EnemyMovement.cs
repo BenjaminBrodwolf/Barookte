@@ -271,7 +271,9 @@ public class EnemyMovement : MonoBehaviour
         {
             Debug.Log("Trigger with Player Enemy !");
             gameManagerScript.StartBlackout();
-            gameManagerScript.WaitForSecondsFunctionAndRestart(3);
+            gameManagerScript.WaitForSeconds(3);
+            SceneManager.LoadScene(currentScene.name); //Load scene called Game.
+            gameManagerScript.EndBlackout();
         }
     }
 }
