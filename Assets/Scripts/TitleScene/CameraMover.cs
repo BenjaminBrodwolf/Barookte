@@ -11,7 +11,6 @@ public class CameraMover : MonoBehaviour
     public float timeToPan = 30f;
     public float speed = 0.1f;
     public float moveTime = 0;
-    public UIManager uiManager;
 
     // Update is called once per frame
     void Update()
@@ -28,18 +27,15 @@ public class CameraMover : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            StartBlackout();
             StartCoroutine(ExampleCoroutine(3));
         }
     }
     
-    public void StartBlackout() => uiManager.StartBlackout();
-    public void EndBlackout() => uiManager.EndBlackout();
-    
+  
     IEnumerator ExampleCoroutine(int seconds)
     {
         yield return new WaitForSeconds(seconds);
         SceneManager.LoadScene(1); //Load scene called Game.
-        EndBlackout();
+        
     }
 }
