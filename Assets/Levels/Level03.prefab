@@ -3251,6 +3251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2d1f8ff33cbec3469fb830c44b4bf57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onWinScene: 
 --- !u!1 &5978602600569424399
 GameObject:
   m_ObjectHideFlags: 0
@@ -3464,7 +3465,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6197128275400057835}
   m_Layer: 0
-  m_Name: Level03 1
+  m_Name: Level03
   m_TagString: GameLevel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
