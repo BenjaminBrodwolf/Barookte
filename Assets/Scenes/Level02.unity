@@ -20363,6 +20363,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 6815203018658926631, guid: 295592fb83def7a4d995019eb649819a,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6815203018658926631, guid: 295592fb83def7a4d995019eb649819a,
+        type: 3}
+      propertyPath: Pan2D
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8757947091153696966, guid: 295592fb83def7a4d995019eb649819a,
         type: 3}
       propertyPath: onWinScene

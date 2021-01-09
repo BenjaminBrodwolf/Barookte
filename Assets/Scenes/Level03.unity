@@ -1504,6 +1504,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Level03
       objectReference: {fileID: 0}
+    - target: {fileID: 8393549201918643874, guid: ac2227005d12a0c4f81188c17d790504,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8393549201918643874, guid: ac2227005d12a0c4f81188c17d790504,
+        type: 3}
+      propertyPath: Pan2D
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8633941169170250807, guid: ac2227005d12a0c4f81188c17d790504,
         type: 3}
       propertyPath: onWinScene
