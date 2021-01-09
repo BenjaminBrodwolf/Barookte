@@ -11,6 +11,7 @@ public class CameraMover : MonoBehaviour
     public float timeToPan = 30f;
     public float speed = 0.1f;
     public float moveTime = 0;
+    public bool StartScreen;
 
     // Update is called once per frame
     void Update()
@@ -27,7 +28,15 @@ public class CameraMover : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            StartCoroutine(ExampleCoroutine(3));
+            if (StartScreen)
+            {
+                StartCoroutine(ExampleCoroutine(3));
+            } else
+            {
+                Application.Quit();
+            }
+
+           
         }
     }
     
