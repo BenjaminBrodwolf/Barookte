@@ -226,7 +226,7 @@ PrefabInstance:
     - target: {fileID: 9177215827533518485, guid: 2ac0a9d32725afb46b10f75e76499c3d,
         type: 3}
       propertyPath: onWinScene
-      value: EndScreen
+      value: Level05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ac0a9d32725afb46b10f75e76499c3d, type: 3}
