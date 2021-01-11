@@ -14,7 +14,7 @@
 ### Sketch
 ![Sketch](Doku/sketch.png "Sketch of Idea")
 ### In Game Screenhot
-![Ingame](Doku/ingame.png "In Game Screenshot")
+![Ingame](Doku/ingame.gif "In Game Screenshot")
 
 # Baröökte
 
