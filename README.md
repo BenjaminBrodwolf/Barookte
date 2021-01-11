@@ -1,10 +1,16 @@
 
+
+
+
+![WIP](Doku/wip_logo.png "Studio WIP")
+
+**Studio WIP** 
+
 **Christoph Vögele, Benjamin Brodwolf**
 
-**Studio WIP **
-
-
 # Game Concept 
+### AI
+![Sketch](Doku/sketch.png "Sketch of Idea")
 
 
 # Baröökte
@@ -40,9 +46,21 @@ Core Mechanics:
     *   Making sure that it is possible to solve levels in several ways, instead of there only being one possible way of movements to escape each level.
 
 
+
 ## Story
 
 
 *   The Story revolves around a zoo keeper trying to escape the zoo while being attacked by all the animals.
 *   Which story method is utilized? 
 *   Comedy: Only in the Zoo there is trouble. The zookeeper is in this bubble of problems. The rest of the world seems to be normal and the zoo visitors also do not seem to have any problems.
+
+
+### AI
+![WIP](Doku/ai.png "A* Enemy")
+
+
+### Graphic
+![Graphic](Doku/graphic.png "Voxel")
+
+### Level Builder
+![Level Builder](Doku/levelbuilder.gif)
