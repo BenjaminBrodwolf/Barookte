@@ -20,8 +20,13 @@ public class EnemyMovement : MonoBehaviour
     private Vector3 position;
     private Scene currentScene;
 
+    private AudioSource audioSource;
+    public AudioClip elephantWalk;
+    private bool firstContact = false;
+
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         currentScene = SceneManager.GetActiveScene ();
     }
 
@@ -58,6 +63,20 @@ public class EnemyMovement : MonoBehaviour
 
         SetRotation(deltaMovement);
 
+        if (firstContact == false)
+        {
+            audioSource.pitch = UnityEngine.Random.Range(0.8f, 1.4f);
+            audioSource.Play();
+            firstContact = true;
+        }
+        else
+        {
+            audioSource.clip = elephantWalk;
+            audioSource.pitch = UnityEngine.Random.Range(0.8f, 1.4f);
+            audioSource.volume = 0.05f;
+            audioSource.Play();
+        }
+        
         isAnimating = true;
         return position;
     }
@@ -271,7 +290,9 @@ public class EnemyMovement : MonoBehaviour
         {
             Debug.Log("Trigger with Player Enemy !");
             gameManagerScript.StartBlackout();
-            gameManagerScript.WaitForSecondsFunctionAndRestart(3);
+            gameManagerScript.WaitForSeconds(3);
+            SceneManager.LoadScene(currentScene.name); //Load scene called Game.
+            gameManagerScript.EndBlackout();
         }
     }
 }

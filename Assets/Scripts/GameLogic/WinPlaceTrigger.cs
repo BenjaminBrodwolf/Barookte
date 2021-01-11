@@ -8,6 +8,7 @@ public class WinPlaceTrigger : MonoBehaviour
 {
     private GameManager gameManagerScript;
     private Scene currentScene;
+    public string onWinScene;
 
     private void Awake()
     {
@@ -32,7 +33,9 @@ public class WinPlaceTrigger : MonoBehaviour
 
             Debug.Log("Trigger with Player Win !");
             gameManagerScript.StartBlackout();
-            gameManagerScript.WaitForSecondsFunctionAndRestart(3);
+            gameManagerScript.WaitForSeconds(3);
+            SceneManager.LoadScene(onWinScene != "" ? onWinScene : currentScene.name); //Load scene called Game.
+            gameManagerScript.EndBlackout();
         }
     }
 }

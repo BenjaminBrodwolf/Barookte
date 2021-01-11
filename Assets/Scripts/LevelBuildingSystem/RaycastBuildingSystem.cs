@@ -40,7 +40,7 @@ public class RaycastBuildingSystem : MonoBehaviour
             buildingObject.ButtonToPlace.onClick.AddListener(() =>
             {
                 Destroy(ObjToBuild);
-                ObjToBuild = (GameObject) PrefabUtility.InstantiatePrefab(buildingObject.ObjToPlace);
+                ObjToBuild = (GameObject) Instantiate(buildingObject.ObjToPlace);
                 if (ObjToBuild.GetComponent<Rigidbody>() != null)
                 {
                     ObjToBuild.GetComponent<Rigidbody>().isKinematic = true;

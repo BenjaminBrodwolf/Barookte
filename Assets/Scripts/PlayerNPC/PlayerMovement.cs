@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
+using Random = System.Random;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -7,6 +9,11 @@ public class PlayerMovement : MonoBehaviour
     private GameManager gameManagerScript;
     public int speed = 10;
     public bool isAlreadyMoving = false;
+    AudioSource audioSource;
+    public AudioClip footsteps;
+    private Vector3 oldTurnPosition;
+    private float tick = 0;
+    public float movementTime = 0.1f;
 
     public Vector3 TurnPosition { get; private set; }
 
@@ -17,18 +24,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         gameManagerObject = GameObject.FindGameObjectWithTag("GameManager");
         gameManagerScript = gameManagerObject.GetComponent<GameManager>();
         Debug.Log(gameManagerScript);
     }
-
-    private void Update()
-    {
-        if (isAlreadyMoving)
-        {
-            isAlreadyMoving = UpdatePositionPerFrame();
-        }
-    }
+    
 
     public enum Directions
     {
@@ -100,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
         return false;
     }
 
-    public Vector3 UpdatePosition(Directions direction)
+    public void UpdatePosition(Directions direction)
     {
         var newPosition = TurnPosition;
         switch (direction)
@@ -121,22 +122,30 @@ public class PlayerMovement : MonoBehaviour
                 throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
         }
 
+        audioSource.clip = footsteps;
+        audioSource.pitch = UnityEngine.Random.Range(1f, 1.4f);
+        audioSource.Play();
+
+        oldTurnPosition = TurnPosition;
         TurnPosition = newPosition;
-        isAlreadyMoving = true;
-        return newPosition;
+        tick = 0;
+        StartCoroutine(nameof(UpdatePositionPerFrame));
     }
 
-    public bool UpdatePositionPerFrame(double animationAccuracy = 0.005)
+    public IEnumerator UpdatePositionPerFrame()
     {
-        
-        //var lerp = Vector3.Lerp(oldTurnPosition, TurnPosition, tick / animtaionTime)
-        var actualPosition = transform.position;
-        var moveDirection = TurnPosition - actualPosition;
-        var deltaMovement = moveDirection * (speed * Time.deltaTime);
-        actualPosition += deltaMovement;
-        transform.position = actualPosition;
 
-        return (actualPosition - TurnPosition).magnitude >= animationAccuracy;
+        while (tick <= movementTime)
+        {
+            tick += Time.deltaTime;
+            var lerp = Vector3.Lerp(oldTurnPosition, TurnPosition, tick / movementTime);
+            // var actualPosition = transform.position;
+            // var moveDirection = TurnPosition - actualPosition;
+            // var deltaMovement = moveDirection * (speed * Time.deltaTime);
+            // actualPosition += deltaMovement;
+            transform.position = lerp;
+            yield return null;
+        }
     }
 
     public void ReactToMoveableItem(Vector3 currentPosition, Vector3 newDirection)
