@@ -9,9 +9,12 @@
 **Christoph Vögele, Benjamin Brodwolf**
 
 # Game Concept 
-### AI
-![Sketch](Doku/sketch.png "Sketch of Idea")
 
+
+### Sketch
+![Sketch](Doku/sketch.png "Sketch of Idea")
+### In Game Screenhot
+![Ingame](Doku/ingame.png "In Game Screenshot")
 
 # Baröökte
 
